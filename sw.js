@@ -1,5 +1,5 @@
 // Learn PWA service worker — offline shell + OTA content
-const CACHE = "learn-v2";
+const CACHE = "learn-v3";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "content.json", "icon-192.png", "icon-512.png", "icon-180.png"];
 
 self.addEventListener("install", e => {
