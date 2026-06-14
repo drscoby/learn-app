@@ -82,6 +82,7 @@ function md(s){ // tiny markdown -> html (content is escaped first)
   s=esc(s);
   s=s.replace(/`([^`]+)`/g,'<code>$1</code>');
   s=s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+  s=s.replace(/\*([^*\n]+)\*/g,'<em>$1</em>');
   s=s.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
   s=s.replace(/^###?\s*(.+)$/gm,'<b>$1</b>');
   s=s.replace(/^[-•]\s*(.+)$/gm,'• $1');
