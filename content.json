@@ -1,0 +1,261 @@
+{
+  "generated": "2026-06-14T00:02:44+00:00",
+  "subjects": [
+    {
+      "id": "dynalite-system-builder",
+      "title": "Dynalite System Builder",
+      "lessons": [
+        {
+          "n": 1,
+          "title": "What Dynalite is & the suite",
+          "body": "**Goal:** by the end you can say what Dynalite is, name the lifecycle tools, and place System Builder in them.\n\nDynalite (now **Signify Dynalite**) is a professional lighting-control system: intelligent devices — controllers, sensors, wall/touch interfaces, gateways — talk over the **DyNet** network and are programmed from PC software. The software is a **suite that follows a project's life**: **System Designer** lays it out and produces a Bill of Materials; **System Builder** installs, programs and **commissions** it; **System Manager** (and the Cloud) run and maintain it afterwards. The clever part: a **single job file** flows through all three, so there's one source of truth from design to daily operation. System Builder — the focus of this course — is the **commissioning** tool in the middle.\n\n**Check:** *Where does System Builder sit in the lifecycle, and what carries through all the tools?*\n(Answer: in the middle — the install/commissioning stage; the single job file carries through Designer → Builder → Manager.)\n\n→ Say \"next\" for L2, or \"quiz me\" to test L1.",
+          "check": "*Where does System Builder sit in the lifecycle, and what carries through all the tools?*",
+          "full": true
+        },
+        {
+          "n": 2,
+          "title": "DyNet & the four concepts",
+          "body": "The network; areas → channels → presets → tasks. (→ wiki/02)",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 3,
+          "title": "The hardware you program",
+          "body": "Controllers, sensors, UIs, gateways; DALI relationship. (→ wiki/03)",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 4,
+          "title": "The System Builder workflow (5.49)",
+          "body": "Ribbon UI, wizards, Dynalite Assist; design→configure→program→commission→test. (→ wiki/04)",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 5,
+          "title": "Integration & management",
+          "body": "Dynalite ↔ Home Assistant; BMS/DALI; System Manager & Cloud. (→ wiki/05)",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 6,
+          "title": "Staying current",
+          "body": "The version line; legacy tools to distrust; how this set keeps you current. (→ wiki/06)",
+          "check": "",
+          "full": false
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Name the Pro Workflow lifecycle tools in order and what System Builder does.",
+          "a": "**System Designer** (design + BoM) → **System Builder** (install/**commission/program**) → **System Manager / Multiroom** (manage) — all sharing **one job file**. [wiki/01]"
+        },
+        {
+          "q": "The four core programming concepts in System Builder?",
+          "a": "**Areas → Channels → Presets → Tasks** (zone → load output → stored scene → logic/automation). [wiki/02]"
+        },
+        {
+          "q": "What is a *preset*?",
+          "a": "A **stored scene** — a set of channel levels recalled together; the primary way lighting states are driven. [wiki/02]"
+        },
+        {
+          "q": "What is DyNet, and what's a *gateway* for?",
+          "a": "DyNet = Dynalite's control network/protocol (DyNet 1 serial / DyNet 2 IP-friendly). A **gateway** bridges DyNet to IP/DALI/BMS/third-party (the integration point). [wiki/02, wiki/03]"
+        },
+        {
+          "q": "Current System Builder version and its headline change?",
+          "a": "**5.49** — **ribbon-based toolbar** + **Dynalite Assist** (a shift from the pre-5.x toolbox/menu UI). [wiki/04, wiki/06]"
+        },
+        {
+          "q": "A YouTube guide's menus don't match your System Builder. Why?",
+          "a": "It's likely **pre-5.x toolbox UI**; the **5.x ribbon** replaced that layout. Concepts hold, navigation doesn't — check docs.dynalite.com 5.49. [wiki/06]"
+        },
+        {
+          "q": "How does Dynalite get into Home Assistant?",
+          "a": "Via the HA **Dynalite integration** over **IP**, through a **gateway** exposing DyNet over Ethernet; areas/channels appear as HA light entities. [wiki/05]"
+        },
+        {
+          "q": "The commissioning loop to internalise?",
+          "a": "*areas → channels → presets → tasks → bind UIs/sensors → download to devices → test/tune.* [wiki/04]"
+        },
+        {
+          "q": "Why keep the single job file sacred?",
+          "a": "It's the **one source of truth** carried Designer→Builder→Manager; re-keying downstream breaks consistency. [wiki/01, wiki/05]"
+        },
+        {
+          "q": "Legacy tools to be wary of in old guides?",
+          "a": "**DLight / Picasso / Dynalite Toolbox / EnvisionProject** and the pre-ribbon System Builder UI — `deprecated` for current UI steps (incl. many official videos). [wiki/06]"
+        },
+        {
+          "q": "What do you physically need to connect a (DyNet1) Dynalite system to Home Assistant?",
+          "a": "An **RS485-to-IP device** on the bus (almost any works), network on **DyNet1 (not DyNet2)**, and your **area/channel map** (or HA `autodiscover`, turned off afterwards). [wiki/05]"
+        },
+        {
+          "q": "Where does the real Dynalite knowledge live (given thin written docs)?",
+          "a": "In the **official training**: System Builder Training Guides, **Installers Training Videos** (@SignifyDynalite / PhilipsDynalite), and **Online Certification** — video/courses are the documentation substitute. [wiki/07]"
+        }
+      ]
+    },
+    {
+      "id": "home-assistant",
+      "title": "Home Assistant",
+      "lessons": [
+        {
+          "n": 1,
+          "title": "What HA is & how to run it",
+          "body": "**Goal:** by the end you can say what HA is, pick an install method, and know whether you can run add-ons.\n\nHome Assistant is an open-source, **local-first** home-automation hub: it runs on *your* hardware and connects devices across ecosystems through integrations, so your automations keep working without the cloud. There are four ways to install it — **HAOS** (the all-in-one appliance image, recommended for most), **Supervised** (Core + Supervisor on your own Debian), **Container** (just the Docker image), and **Core** (bare Python). The fork in the road: **only HAOS and Supervised can run add-ons** (the containerised extras like Zigbee2MQTT and the backup system). Container and Core give you the engine but none of that scaffolding.\n\n**Check:** *You want the easy path with add-ons and built-in backups — which install method, and why?*\n(Answer: HAOS — it bundles Supervisor, add-ons and backups in one appliance image.)\n\n→ Say \"next\" for L2, or \"quiz me\" to test L1.",
+          "check": "*You want the easy path with add-ons and built-in backups — which install method, and why?*",
+          "full": true
+        },
+        {
+          "n": 2,
+          "title": "Entities, areas, and your first automation",
+          "body": "The entity model; trigger/condition/action; any-zone + `for`-duration. (→ wiki/02)",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 3,
+          "title": "Integrations & interoperability",
+          "body": "The integration model; Matter/Thread/Zigbee/Z-Wave/SmartThings as HA integrations; local-vs-cloud. (→ wiki/03)",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 4,
+          "title": "Dashboards, voice, ESPHome",
+          "body": "Sections/cards; Assist (local voice); building your own sensors. (→ wiki/04)",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 5,
+          "title": "Operating it safely",
+          "body": "Backups, the update ritual, remote access, security, your credential boundary. (→ wiki/05)",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 6,
+          "title": "Staying current",
+          "body": "The release train; the 6-month deprecation policy; reading the deprecation register; how this set keeps *you* current. (→ wiki/06)",
+          "check": "",
+          "full": false
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Name the four HA installation methods, and which two can run add-ons.",
+          "a": "HAOS, Supervised, Container, Core — only **HAOS** and **Supervised** run add-ons. [wiki/01 · 2026.6]"
+        },
+        {
+          "q": "What's the release cadence and version scheme?",
+          "a": "A major release the **first Wednesday of each month**, versioned `YYYY.MM`, with mid-month patches. [wiki/06 · 2026.6]"
+        },
+        {
+          "q": "How long is HA's deprecation window before removal?",
+          "a": "~**6 months** from `deprecated` to `removed`. [wiki/06 · 2026.6]"
+        },
+        {
+          "q": "A guide's template sensor uses `platform: template` under `sensor:`. What happens on 2026.6 and what's the fix?",
+          "a": "**Removed** in 2026.6 (deprecated 2025.12) — breaks. Move to the top-level **`template:`** block. [wiki/02, wiki/06 · 2026.6]"
+        },
+        {
+          "q": "What replaced the deprecated `device_tracker.see` action?",
+          "a": "**Template entities** now support the **device_tracker** platform. [wiki/02 · 2026.5]"
+        },
+        {
+          "q": "SmartThings in HA — controller or integration, local or cloud?",
+          "a": "A **cloud integration**: HA connects to a SmartThings account to surface its devices — not running SmartThings itself. Prefer local integrations where possible. [wiki/03 · 2026.6]"
+        },
+        {
+          "q": "The one habit before every update?",
+          "a": "**Take a backup** (encrypted, 2026.4+) and **read the breaking-changes section** first. [wiki/05, wiki/06 · 2026.6]"
+        },
+        {
+          "q": "Konnected hardware after 2026.6 — what now?",
+          "a": "The integration was **removed** (deprecated 2025.10); **flash the hardware to ESPHome**. [wiki/03, wiki/06 · 2026.6]"
+        },
+        {
+          "q": "Safest remote-access options, and what to avoid?",
+          "a": "Nabu Casa Cloud / VPN (WireGuard/Tailscale) / reverse proxy + TLS. **Avoid raw port-forwarding.** [wiki/05 · 2026.6]"
+        },
+        {
+          "q": "New in 2026.6 automations (two things)?",
+          "a": "Triggers/conditions work with **any defined zone** (not just home); **`for` duration** field on triggers/conditions. [wiki/02 · 2026.6]"
+        }
+      ]
+    },
+    {
+      "id": "savant-home-automation",
+      "title": "Savant Home Automation",
+      "lessons": [
+        {
+          "n": 1,
+          "title": "What Savant is & the dealer model",
+          "body": "**Goal:** understand why Savant feels expensive and locked-down — and what that means for your decision.\n\nSavant is a premium, professionally-installed automation platform — strong on AV and polish. But it's **dealer-only**: the software that programs it, **RacePoint Blueprint**, is restricted to certified dealers, so you can't change or fix your own system — every adjustment is a paid dealer visit, on top of a subscription. That single fact is why your system feels expensive and why, when it stops working, you're stuck waiting on someone else. It's also the mirror image of Home Assistant, which you run and change yourself for free. Importantly, Savant the *company* isn't dead — it's your *older install* that's failing and uneconomic to keep feeding.\n\n**Check:** *Why can't you just fix the Savant system yourself, and why does that matter for repair-vs-replace?*\n(Answer: Blueprint is dealer-only — no self-service; that lock-in is the core cost/résilience argument for moving to self-managed HA.)\n\n→ Say \"next\" for L2, or \"quiz me\" to test L1.",
+          "check": "*Why can't you just fix the Savant system yourself, and why does that matter for repair-vs-replace?*",
+          "full": true
+        },
+        {
+          "n": 2,
+          "title": "Architecture",
+          "body": "da Vinci / Pro Host / Blueprint / Pro App — and what \"not working\" usually means. (→ wiki/02)",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 3,
+          "title": "What it controls",
+          "body": "The capability inventory = the migration checklist. (→ wiki/03)",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 4,
+          "title": "Repair vs replace",
+          "body": "The honest framework; the dealer-quote-first move; phased migration with AV last. (→ wiki/04–05)",
+          "check": "",
+          "full": false
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Savant's three architectural pieces?",
+          "a": "**da Vinci** (OS) · **Pro Host** (brain hardware) · **RacePoint Blueprint** (config software). [wiki/02]"
+        },
+        {
+          "q": "Why can't Scott manage his own Savant system?",
+          "a": "**RacePoint Blueprint is dealer-only** — homeowners can't program/service it; every change needs a certified dealer. [wiki/01]"
+        },
+        {
+          "q": "Is Savant end-of-life?",
+          "a": "**No — the platform is active** (da Vinci, subscription, Savant Power). It's **Scott's older install** that's failing/uneconomic. Distinguish the two. [wiki/01]"
+        },
+        {
+          "q": "The cheap, decisive first step in the repair-vs-replace call?",
+          "a": "A **dealer diagnostic/quote** — the one thing Scott can't do himself, and it tells you if the fault is trivial or fundamental. [wiki/04]"
+        },
+        {
+          "q": "Which Savant function carries over to HA most easily, and which is the migration risk?",
+          "a": "**Lighting** is easy (Dynalite stays, driven by HA); **AV / multi-room audio** is the make-or-break. [wiki/03, wiki/05]"
+        },
+        {
+          "q": "The core argument for replacing Savant with HA?",
+          "a": "**Self-management** — no dealer lock-out, no per-change cost; free software vs subscription + dealer labour. [wiki/04]"
+        },
+        {
+          "q": "What's the obsolescence/version signal for this set?",
+          "a": "The **da Vinci OS** version line (e.g. 10.5.1) + the Pro Host model range. [wiki/05]"
+        },
+        {
+          "q": "What happens to this KB if Scott commits to the migration?",
+          "a": "It's **designed to go dormant → archive** once Savant is decommissioned (its job done). [wiki/05]"
+        }
+      ]
+    }
+  ]
+}

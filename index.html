@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Learn">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<title>Learn</title>
+<style>
+  :root{
+    --bg:#0f172a; --bg2:#1e293b; --card:#1e293b; --card2:#273449;
+    --txt:#e2e8f0; --mut:#94a3b8; --acc:#38bdf8; --acc2:#0ea5e9;
+    --good:#34d399; --bad:#fb7185; --line:#334155; --r:16px;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f1f5f9; --bg2:#fff; --card:#fff; --card2:#f8fafc;
+      --txt:#0f172a; --mut:#64748b; --line:#e2e8f0; }
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  html,body{margin:0; height:100%}
+  body{background:var(--bg); color:var(--txt); font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);}
+  #app{max-width:680px; margin:0 auto; padding:16px 16px 96px}
+  header.bar{display:flex; align-items:center; gap:12px; padding:6px 0 14px; position:sticky; top:0; background:var(--bg); z-index:5}
+  header.bar h1{font-size:20px; margin:0; flex:1; letter-spacing:.3px}
+  .back{background:var(--card); border:1px solid var(--line); color:var(--txt); border-radius:12px; padding:8px 12px; font-size:15px; cursor:pointer}
+  .sub{color:var(--mut); font-size:13px}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:16px; margin:10px 0; cursor:pointer; transition:transform .06s}
+  .card:active{transform:scale(.99)}
+  .card h2{margin:0 0 4px; font-size:17px}
+  .row{display:flex; align-items:center; gap:10px}
+  .pill{font-size:12px; color:var(--mut); background:var(--card2); border:1px solid var(--line); padding:3px 9px; border-radius:999px}
+  .pill.due{color:#0f172a; background:var(--acc); border-color:var(--acc)}
+  .bar-prog{height:6px; background:var(--card2); border-radius:999px; overflow:hidden; margin-top:10px}
+  .bar-prog > i{display:block; height:100%; background:var(--acc)}
+  .seg{display:flex; gap:8px; margin:6px 0 14px}
+  .seg button{flex:1; padding:10px; border-radius:12px; border:1px solid var(--line); background:var(--card); color:var(--mut); font-size:15px; cursor:pointer}
+  .seg button.on{background:var(--acc); color:#0f172a; border-color:var(--acc); font-weight:600}
+  .btn{display:block; width:100%; padding:14px; border-radius:14px; border:none; font-size:16px; font-weight:600; cursor:pointer; margin-top:10px}
+  .btn.primary{background:var(--acc); color:#06283d}
+  .btn.ghost{background:var(--card); color:var(--txt); border:1px solid var(--line)}
+  .qwrap{background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:22px 18px; min-height:200px; display:flex; flex-direction:column; justify-content:center}
+  .qlabel{font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--mut); margin-bottom:10px}
+  .qtext{font-size:19px; line-height:1.45}
+  .atext{margin-top:18px; padding-top:16px; border-top:1px dashed var(--line); font-size:17px; color:var(--txt)}
+  .grade{display:flex; gap:10px; margin-top:12px}
+  .grade .btn{margin-top:0}
+  .btn.bad{background:var(--bad); color:#3b0a14}
+  .btn.good{background:var(--good); color:#053527}
+  .lesson{background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:18px}
+  .lesson .body{font-size:16px}
+  .lesson .body code{background:var(--card2); padding:2px 6px; border-radius:6px; font-size:14px}
+  .lesson .body strong{color:var(--txt)}
+  .lesson .check{margin-top:14px; padding:12px 14px; background:var(--card2); border-radius:12px; font-size:15px}
+  .navrow{display:flex; gap:10px; margin-top:14px}
+  .navrow .btn{margin-top:0}
+  .stub{color:var(--mut); font-style:italic; margin-top:8px; font-size:14px}
+  .empty{color:var(--mut); text-align:center; padding:40px 0}
+  .done{color:var(--good); font-weight:600}
+  footer.meta{position:fixed; bottom:0; left:0; right:0; text-align:center; font-size:11px; color:var(--mut); padding:8px; background:linear-gradient(transparent,var(--bg) 40%)}
+  a{color:var(--acc)}
+</style>
+</head>
+<body>
+<div id="app"><div class="empty">Loading…</div></div>
+<footer class="meta" id="meta"></footer>
+<script>
+const PKEY="learn_progress_v1";
+const INTERVALS=[1,3,7,21,60]; // Leitner box -> days
+let DATA=null, PROG=load(), view={name:"home"};
+
+function load(){ try{return JSON.parse(localStorage.getItem(PKEY))||{}}catch(e){return {}} }
+function save(){ localStorage.setItem(PKEY, JSON.stringify(PROG)); }
+function today(){ const d=new Date(); d.setHours(0,0,0,0); return d.getTime(); }
+function addDays(ms,n){ return ms + n*86400000; }
+function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function md(s){ // tiny markdown -> html (content is escaped first)
+  s=esc(s);
+  s=s.replace(/`([^`]+)`/g,'<code>$1</code>');
+  s=s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+  s=s.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+  s=s.replace(/^###?\s*(.+)$/gm,'<b>$1</b>');
+  s=s.replace(/^[-•]\s*(.+)$/gm,'• $1');
+  s=s.replace(/\n{2,}/g,'<br><br>').replace(/\n/g,'<br>');
+  return s;
+}
+// ---- progress helpers ----
+function qstate(sid,i){ return (PROG.quiz&&PROG.quiz[sid]&&PROG.quiz[sid][i]) || null; }
+function setQ(sid,i,o){ PROG.quiz=PROG.quiz||{}; PROG.quiz[sid]=PROG.quiz[sid]||{}; PROG.quiz[sid][i]=o; save(); }
+function dueCount(sid,quiz){ let n=0; quiz.forEach((c,i)=>{ const st=qstate(sid,i); if(!st||st.due<=today()) n++; }); return n; }
+function lessonDone(sid,n){ return PROG.lessons&&PROG.lessons[sid]&&PROG.lessons[sid][n]; }
+function setLesson(sid,n,v){ PROG.lessons=PROG.lessons||{}; PROG.lessons[sid]=PROG.lessons[sid]||{}; PROG.lessons[sid][n]=v; save(); }
+function subjProg(s){ const t=s.lessons.length||1; let d=0; s.lessons.forEach(l=>{ if(lessonDone(s.id,l.n)) d++; }); return Math.round(100*d/t); }
+
+// ---- views ----
+function render(){
+  const app=document.getElementById("app");
+  if(!DATA){ app.innerHTML='<div class="empty">No content yet.</div>'; return; }
+  if(view.name==="home") return home(app);
+  if(view.name==="subject") return subject(app);
+  if(view.name==="lesson") return lesson(app);
+  if(view.name==="quiz") return quiz(app);
+}
+function home(app){
+  const totalDue=DATA.subjects.reduce((a,s)=>a+dueCount(s.id,s.quiz),0);
+  let h=`<header class="bar"><h1>Learn</h1></header>`;
+  if(totalDue>0) h+=`<button class="btn primary" onclick="startReview()">Review — ${totalDue} card${totalDue>1?'s':''} due</button>`;
+  DATA.subjects.forEach(s=>{
+    const due=dueCount(s.id,s.quiz), p=subjProg(s);
+    h+=`<div class="card" onclick='go("subject","${s.id}")'>
+      <h2>${esc(s.title)}</h2>
+      <div class="row"><span class="pill">${s.lessons.length} lessons</span>
+        <span class="pill">${s.quiz.length} cards</span>
+        ${due>0?`<span class="pill due">${due} due</span>`:`<span class="pill">✓ up to date</span>`}</div>
+      <div class="bar-prog"><i style="width:${p}%"></i></div></div>`;
+  });
+  app.innerHTML=h;
+}
+function curSubject(){ return DATA.subjects.find(s=>s.id===view.sid); }
+function subject(app){
+  const s=curSubject(); const tab=view.tab||"lessons";
+  let h=`<header class="bar"><button class="back" onclick='go("home")'>‹</button><h1>${esc(s.title)}</h1></header>
+    <div class="seg"><button class="${tab==='lessons'?'on':''}" onclick='go("subject","${s.id}","lessons")'>Lessons</button>
+      <button class="${tab==='quiz'?'on':''}" onclick='go("subject","${s.id}","quiz")'>Quiz</button></div>`;
+  if(tab==="lessons"){
+    if(!s.lessons.length) h+=`<div class="empty">No lessons yet.</div>`;
+    s.lessons.forEach(l=>{
+      h+=`<div class="card" onclick='openLesson("${s.id}",${l.n})'>
+        <div class="row"><h2 style="flex:1">L${l.n} · ${esc(l.title)}</h2>${lessonDone(s.id,l.n)?'<span class="done">✓</span>':''}</div>
+        <div class="sub">${esc((l.body||"").replace(/\*\*/g,"").slice(0,90))}…</div></div>`;
+    });
+  } else {
+    const due=dueCount(s.id,s.quiz);
+    h+=`<button class="btn primary" onclick='startQuiz("${s.id}")'>${due>0?`Start — ${due} due`:'Practice all'}</button>`;
+    h+=`<div class="sub" style="text-align:center;margin-top:10px">Spaced repetition · tap a card to flip</div>`;
+  }
+  app.innerHTML=h;
+}
+function lesson(app){
+  const s=curSubject(); const l=s.lessons.find(x=>x.n===view.n);
+  let h=`<header class="bar"><button class="back" onclick='go("subject","${s.id}","lessons")'>‹</button><h1>L${l.n}</h1></header>
+    <div class="lesson"><h2 style="margin-top:0">${esc(l.title)}</h2>
+      <div class="body">${md(l.body||"")}</div>
+      ${l.check?`<div class="check"><strong>Check:</strong> ${md(l.check)}</div>`:''}
+      ${!l.full?`<div class="stub">Outline lesson — the full version fills in as you run LEARN on the desktop.</div>`:''}
+    </div>
+    <div class="navrow">
+      ${l.n>1?`<button class="btn ghost" onclick='openLesson("${s.id}",${l.n-1})'>‹ Prev</button>`:''}
+      <button class="btn primary" onclick='markLesson("${s.id}",${l.n})'>${lessonDone(s.id,l.n)?'Done ✓':'Mark done'}</button>
+      ${s.lessons.find(x=>x.n===l.n+1)?`<button class="btn ghost" onclick='openLesson("${s.id}",${l.n+1})'>Next ›</button>`:''}
+    </div>`;
+  app.innerHTML=h;
+}
+// ---- quiz session ----
+let SESS=null;
+function buildSession(subjectIds){
+  const q=[];
+  DATA.subjects.forEach(s=>{ if(subjectIds && !subjectIds.includes(s.id)) return;
+    s.quiz.forEach((c,i)=>{ const st=qstate(s.id,i); if(!st || st.due<=today()) q.push({sid:s.id,i,c}); });
+  });
+  // shuffle
+  for(let k=q.length-1;k>0;k--){ const j=Math.floor(Math.random()*(k+1)); [q[k],q[j]]=[q[j],q[k]]; }
+  return q;
+}
+function startQuiz(sid){ SESS={queue:buildSession([sid]), flipped:false, sid}; view={name:"quiz"}; render(); }
+function startReview(){ SESS={queue:buildSession(null), flipped:false, sid:null}; view={name:"quiz"}; render(); }
+function quiz(app){
+  if(!SESS || !SESS.queue.length){
+    app.innerHTML=`<header class="bar"><button class="back" onclick='go("home")'>‹</button><h1>Done</h1></header>
+      <div class="empty">🎉 All caught up.<br><br><button class="btn primary" onclick='go("home")'>Home</button></div>`;
+    return;
+  }
+  const item=SESS.queue[0]; const total=SESS.startLen=SESS.startLen||SESS.queue.length;
+  let h=`<header class="bar"><button class="back" onclick='go("home")'>‹</button><h1>Quiz</h1>
+      <span class="sub">${total-SESS.queue.length+1}/${total}</span></header>
+    <div class="qwrap" onclick="flip()">
+      <div class="qlabel">${esc(DATA.subjects.find(s=>s.id===item.sid).title)}</div>
+      <div class="qtext">${md(item.c.q)}</div>
+      ${SESS.flipped?`<div class="atext">${md(item.c.a)}</div>`:''}</div>`;
+  if(!SESS.flipped){
+    h+=`<button class="btn primary" onclick="flip()">Show answer</button>`;
+  } else {
+    h+=`<div class="grade"><button class="btn bad" onclick="grade(false)">Missed</button>
+        <button class="btn good" onclick="grade(true)">Got it</button></div>`;
+  }
+  app.innerHTML=h;
+}
+function flip(){ if(SESS){ SESS.flipped=true; render(); } }
+function grade(ok){
+  const item=SESS.queue.shift();
+  const st=qstate(item.sid,item.i)||{box:0};
+  if(ok){ const box=Math.min((st.box||0)+1,5); setQ(item.sid,item.i,{box,due:addDays(today(),INTERVALS[box-1])}); }
+  else { setQ(item.sid,item.i,{box:1,due:addDays(today(),1)}); SESS.queue.push(item); } // requeue this session
+  SESS.flipped=false; render();
+}
+function markLesson(sid,n){ setLesson(sid,n,!lessonDone(sid,n)); render(); }
+function openLesson(sid,n){ view={name:"lesson",sid,n}; render(); window.scrollTo(0,0); }
+function go(name,sid,tab){ view={name,sid,tab}; render(); window.scrollTo(0,0); }
+
+// ---- load + OTA ----
+async function loadContent(){
+  try{
+    const r=await fetch("content.json?cb="+Date.now(),{cache:"no-store"});
+    if(r.ok){ DATA=await r.json(); paint(); return; }
+  }catch(e){}
+  try{ const r=await caches.match("content.json"); if(r){ DATA=await r.json(); } }catch(e){}
+  paint();
+}
+function paint(){
+  view={name:"home"}; render();
+  if(DATA) document.getElementById("meta").textContent=
+    "content updated "+ new Date(DATA.generated).toLocaleDateString() +
+    " · "+ DATA.subjects.length +" subjects";
+}
+loadContent();
+if("serviceWorker" in navigator){ navigator.serviceWorker.register("sw.js").catch(()=>{}); }
+</script>
+</body>
+</html>
