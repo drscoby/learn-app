@@ -60,8 +60,9 @@ def parse_course(md):
         m = syl.match(line.strip())
         if m:
             n = int(m.group(1))
+            teaser = re.sub(r'\s*\(→[^)]*\)\s*$', '', m.group(3).strip())
             lessons[n] = {"n": n, "title": m.group(2).strip(),
-                          "body": m.group(3).strip(), "check": "", "full": False}
+                          "body": teaser, "check": "", "full": False}
     # full lessons: ## Lesson N ... (until next ##)
     blocks = re.split(r'\n(?=## )', md)
     lre = re.compile(r'^##\s*Lesson\s*(\d+)', re.I)
@@ -69,11 +70,16 @@ def parse_course(md):
         m = lre.match(b.strip())
         if m:
             n = int(m.group(1))
-            body = re.sub(r'^##\s*Lesson\s*\d+[^\n]*\n', '', b.strip()).strip()
+            raw = re.sub(r'^##\s*Lesson\s*\d+[^\n]*\n', '', b.strip()).strip()
+            # split body from the "**Check:**" self-test; show them separately
+            parts = re.split(r'\*\*Check:\*\*', raw, maxsplit=1)
+            body = parts[0].strip()
             check = ""
-            cm = re.search(r'\*\*Check:\*\*\s*(.+)', body)
-            if cm:
-                check = cm.group(1).strip()
+            if len(parts) > 1:
+                # the check question is the first line; drop the "(Answer: …)" + nav hints
+                check = parts[1].strip().split('\n')[0].strip()
+            # drop any trailing "→ Say …" navigation hint from the body
+            body = re.split(r'\n\s*→\s', body)[0].strip()
             lessons.setdefault(n, {"n": n, "title": f"Lesson {n}"})
             lessons[n]["body"] = body
             lessons[n]["check"] = check

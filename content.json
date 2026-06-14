@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-14T00:02:44+00:00",
+  "generated": "2026-06-14T01:13:34+00:00",
   "subjects": [
     {
       "id": "dynalite-system-builder",
@@ -8,42 +8,42 @@
         {
           "n": 1,
           "title": "What Dynalite is & the suite",
-          "body": "**Goal:** by the end you can say what Dynalite is, name the lifecycle tools, and place System Builder in them.\n\nDynalite (now **Signify Dynalite**) is a professional lighting-control system: intelligent devices — controllers, sensors, wall/touch interfaces, gateways — talk over the **DyNet** network and are programmed from PC software. The software is a **suite that follows a project's life**: **System Designer** lays it out and produces a Bill of Materials; **System Builder** installs, programs and **commissions** it; **System Manager** (and the Cloud) run and maintain it afterwards. The clever part: a **single job file** flows through all three, so there's one source of truth from design to daily operation. System Builder — the focus of this course — is the **commissioning** tool in the middle.\n\n**Check:** *Where does System Builder sit in the lifecycle, and what carries through all the tools?*\n(Answer: in the middle — the install/commissioning stage; the single job file carries through Designer → Builder → Manager.)\n\n→ Say \"next\" for L2, or \"quiz me\" to test L1.",
+          "body": "**Goal:** by the end you can say what Dynalite is, name the lifecycle tools, and place System Builder in them.\n\nDynalite (now **Signify Dynalite**) is a professional lighting-control system: intelligent devices — controllers, sensors, wall/touch interfaces, gateways — talk over the **DyNet** network and are programmed from PC software. The software is a **suite that follows a project's life**: **System Designer** lays it out and produces a Bill of Materials; **System Builder** installs, programs and **commissions** it; **System Manager** (and the Cloud) run and maintain it afterwards. The clever part: a **single job file** flows through all three, so there's one source of truth from design to daily operation. System Builder — the focus of this course — is the **commissioning** tool in the middle.",
           "check": "*Where does System Builder sit in the lifecycle, and what carries through all the tools?*",
           "full": true
         },
         {
           "n": 2,
           "title": "DyNet & the four concepts",
-          "body": "The network; areas → channels → presets → tasks. (→ wiki/02)",
+          "body": "The network; areas → channels → presets → tasks.",
           "check": "",
           "full": false
         },
         {
           "n": 3,
           "title": "The hardware you program",
-          "body": "Controllers, sensors, UIs, gateways; DALI relationship. (→ wiki/03)",
+          "body": "Controllers, sensors, UIs, gateways; DALI relationship.",
           "check": "",
           "full": false
         },
         {
           "n": 4,
           "title": "The System Builder workflow (5.49)",
-          "body": "Ribbon UI, wizards, Dynalite Assist; design→configure→program→commission→test. (→ wiki/04)",
+          "body": "Ribbon UI, wizards, Dynalite Assist; design→configure→program→commission→test.",
           "check": "",
           "full": false
         },
         {
           "n": 5,
           "title": "Integration & management",
-          "body": "Dynalite ↔ Home Assistant; BMS/DALI; System Manager & Cloud. (→ wiki/05)",
+          "body": "Dynalite ↔ Home Assistant; BMS/DALI; System Manager & Cloud.",
           "check": "",
           "full": false
         },
         {
           "n": 6,
           "title": "Staying current",
-          "body": "The version line; legacy tools to distrust; how this set keeps you current. (→ wiki/06)",
+          "body": "The version line; legacy tools to distrust; how this set keeps you current.",
           "check": "",
           "full": false
         }
@@ -106,42 +106,42 @@
         {
           "n": 1,
           "title": "What HA is & how to run it",
-          "body": "**Goal:** by the end you can say what HA is, pick an install method, and know whether you can run add-ons.\n\nHome Assistant is an open-source, **local-first** home-automation hub: it runs on *your* hardware and connects devices across ecosystems through integrations, so your automations keep working without the cloud. There are four ways to install it — **HAOS** (the all-in-one appliance image, recommended for most), **Supervised** (Core + Supervisor on your own Debian), **Container** (just the Docker image), and **Core** (bare Python). The fork in the road: **only HAOS and Supervised can run add-ons** (the containerised extras like Zigbee2MQTT and the backup system). Container and Core give you the engine but none of that scaffolding.\n\n**Check:** *You want the easy path with add-ons and built-in backups — which install method, and why?*\n(Answer: HAOS — it bundles Supervisor, add-ons and backups in one appliance image.)\n\n→ Say \"next\" for L2, or \"quiz me\" to test L1.",
+          "body": "**Goal:** by the end you can say what HA is, pick an install method, and know whether you can run add-ons.\n\nHome Assistant is an open-source, **local-first** home-automation hub: it runs on *your* hardware and connects devices across ecosystems through integrations, so your automations keep working without the cloud. There are four ways to install it — **HAOS** (the all-in-one appliance image, recommended for most), **Supervised** (Core + Supervisor on your own Debian), **Container** (just the Docker image), and **Core** (bare Python). The fork in the road: **only HAOS and Supervised can run add-ons** (the containerised extras like Zigbee2MQTT and the backup system). Container and Core give you the engine but none of that scaffolding.",
           "check": "*You want the easy path with add-ons and built-in backups — which install method, and why?*",
           "full": true
         },
         {
           "n": 2,
           "title": "Entities, areas, and your first automation",
-          "body": "The entity model; trigger/condition/action; any-zone + `for`-duration. (→ wiki/02)",
+          "body": "The entity model; trigger/condition/action; any-zone + `for`-duration.",
           "check": "",
           "full": false
         },
         {
           "n": 3,
           "title": "Integrations & interoperability",
-          "body": "The integration model; Matter/Thread/Zigbee/Z-Wave/SmartThings as HA integrations; local-vs-cloud. (→ wiki/03)",
+          "body": "The integration model; Matter/Thread/Zigbee/Z-Wave/SmartThings as HA integrations; local-vs-cloud.",
           "check": "",
           "full": false
         },
         {
           "n": 4,
           "title": "Dashboards, voice, ESPHome",
-          "body": "Sections/cards; Assist (local voice); building your own sensors. (→ wiki/04)",
+          "body": "Sections/cards; Assist (local voice); building your own sensors.",
           "check": "",
           "full": false
         },
         {
           "n": 5,
           "title": "Operating it safely",
-          "body": "Backups, the update ritual, remote access, security, your credential boundary. (→ wiki/05)",
+          "body": "Backups, the update ritual, remote access, security, your credential boundary.",
           "check": "",
           "full": false
         },
         {
           "n": 6,
           "title": "Staying current",
-          "body": "The release train; the 6-month deprecation policy; reading the deprecation register; how this set keeps *you* current. (→ wiki/06)",
+          "body": "The release train; the 6-month deprecation policy; reading the deprecation register; how this set keeps *you* current.",
           "check": "",
           "full": false
         }
@@ -196,28 +196,28 @@
         {
           "n": 1,
           "title": "What Savant is & the dealer model",
-          "body": "**Goal:** understand why Savant feels expensive and locked-down — and what that means for your decision.\n\nSavant is a premium, professionally-installed automation platform — strong on AV and polish. But it's **dealer-only**: the software that programs it, **RacePoint Blueprint**, is restricted to certified dealers, so you can't change or fix your own system — every adjustment is a paid dealer visit, on top of a subscription. That single fact is why your system feels expensive and why, when it stops working, you're stuck waiting on someone else. It's also the mirror image of Home Assistant, which you run and change yourself for free. Importantly, Savant the *company* isn't dead — it's your *older install* that's failing and uneconomic to keep feeding.\n\n**Check:** *Why can't you just fix the Savant system yourself, and why does that matter for repair-vs-replace?*\n(Answer: Blueprint is dealer-only — no self-service; that lock-in is the core cost/résilience argument for moving to self-managed HA.)\n\n→ Say \"next\" for L2, or \"quiz me\" to test L1.",
+          "body": "**Goal:** understand why Savant feels expensive and locked-down — and what that means for your decision.\n\nSavant is a premium, professionally-installed automation platform — strong on AV and polish. But it's **dealer-only**: the software that programs it, **RacePoint Blueprint**, is restricted to certified dealers, so you can't change or fix your own system — every adjustment is a paid dealer visit, on top of a subscription. That single fact is why your system feels expensive and why, when it stops working, you're stuck waiting on someone else. It's also the mirror image of Home Assistant, which you run and change yourself for free. Importantly, Savant the *company* isn't dead — it's your *older install* that's failing and uneconomic to keep feeding.",
           "check": "*Why can't you just fix the Savant system yourself, and why does that matter for repair-vs-replace?*",
           "full": true
         },
         {
           "n": 2,
           "title": "Architecture",
-          "body": "da Vinci / Pro Host / Blueprint / Pro App — and what \"not working\" usually means. (→ wiki/02)",
+          "body": "da Vinci / Pro Host / Blueprint / Pro App — and what \"not working\" usually means.",
           "check": "",
           "full": false
         },
         {
           "n": 3,
           "title": "What it controls",
-          "body": "The capability inventory = the migration checklist. (→ wiki/03)",
+          "body": "The capability inventory = the migration checklist.",
           "check": "",
           "full": false
         },
         {
           "n": 4,
           "title": "Repair vs replace",
-          "body": "The honest framework; the dealer-quote-first move; phased migration with AV last. (→ wiki/04–05)",
+          "body": "The honest framework; the dealer-quote-first move; phased migration with AV last.",
           "check": "",
           "full": false
         }

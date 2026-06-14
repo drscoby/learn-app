@@ -127,6 +127,7 @@ function subject(app){
     <div class="seg"><button class="${tab==='lessons'?'on':''}" onclick='go("subject","${s.id}","lessons")'>Lessons</button>
       <button class="${tab==='quiz'?'on':''}" onclick='go("subject","${s.id}","quiz")'>Quiz</button></div>`;
   if(tab==="lessons"){
+    if(s.quiz.length) h+=`<button class="btn ghost" style="margin-bottom:8px" onclick='startQuiz("${s.id}")'>Quiz me on this subject ›</button>`;
     if(!s.lessons.length) h+=`<div class="empty">No lessons yet.</div>`;
     s.lessons.forEach(l=>{
       h+=`<div class="card" onclick='openLesson("${s.id}",${l.n})'>
@@ -152,7 +153,8 @@ function lesson(app){
       ${l.n>1?`<button class="btn ghost" onclick='openLesson("${s.id}",${l.n-1})'>‹ Prev</button>`:''}
       <button class="btn primary" onclick='markLesson("${s.id}",${l.n})'>${lessonDone(s.id,l.n)?'Done ✓':'Mark done'}</button>
       ${s.lessons.find(x=>x.n===l.n+1)?`<button class="btn ghost" onclick='openLesson("${s.id}",${l.n+1})'>Next ›</button>`:''}
-    </div>`;
+    </div>
+    <button class="btn primary" style="margin-top:12px" onclick='startQuiz("${s.id}")'>Quiz me on this subject</button>`;
   app.innerHTML=h;
 }
 // ---- quiz session ----
