@@ -1,6 +1,6 @@
 // Learn PWA service worker — offline shell + OTA content
-const CACHE = "learn-v3";
-const SHELL = ["./", "index.html", "manifest.webmanifest", "content.json", "icon-192.png", "icon-512.png", "icon-180.png"];
+const CACHE = "learn-v4";
+const SHELL = ["./", "index.html", "manifest.webmanifest", "content.json", "cpd-content.json", "icon-192.png", "icon-512.png", "icon-180.png"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
@@ -12,14 +12,15 @@ self.addEventListener("activate", e => {
 });
 self.addEventListener("fetch", e => {
   const url = new URL(e.request.url);
-  // content.json -> network first (OTA), fall back to cache
-  if (url.pathname.endsWith("content.json")) {
+  // content.json / cpd-content.json -> network first (OTA), fall back to cache
+  if (url.pathname.endsWith("content.json") || url.pathname.endsWith("cpd-content.json")) {
+    const key = url.pathname.endsWith("cpd-content.json") ? "cpd-content.json" : "content.json";
     e.respondWith(
       fetch(e.request).then(r => {
         const copy = r.clone();
-        caches.open(CACHE).then(c => c.put("content.json", copy));
+        caches.open(CACHE).then(c => c.put(key, copy));
         return r;
-      }).catch(() => caches.match("content.json"))
+      }).catch(() => caches.match(key))
     );
     return;
   }

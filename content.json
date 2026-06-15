@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-14T01:13:34+00:00",
+  "generated": "2026-06-14T08:05:08+00:00",
   "subjects": [
     {
       "id": "dynalite-system-builder",
@@ -186,6 +186,61 @@
         {
           "q": "New in 2026.6 automations (two things)?",
           "a": "Triggers/conditions work with **any defined zone** (not just home); **`for` duration** field on triggers/conditions. [wiki/02 · 2026.6]"
+        }
+      ]
+    },
+    {
+      "id": "prs-journal",
+      "title": "PRS Journal",
+      "lessons": [],
+      "quiz": [
+        {
+          "q": "In a single-surgeon series of >1000 cleft-palate repairs, which repair technique had **zero** postoperative fistulas, and what was the overall fistula rate?",
+          "a": "**Furlow palatoplasty** (0/159); overall fistula rate **0.86%** — all fistulas were after straight-line repair. `[157(6)] →` https://doi.org/10.1097/PRS.0000000000012549"
+        },
+        {
+          "q": "What is the highest-tier evidence in this issue, and what did it show?",
+          "a": "A **double-blind split-wound RCT** of **nanofat** in abdominoplasty (n=50): significantly better POSAS scar scores at 6 months, no oil cysts/fat necrosis. `[L1 · 157(6)] →` https://doi.org/10.1097/PRS.0000000000012507"
+        },
+        {
+          "q": "Published formulas for predicting final implant volume in 2-stage TE→implant reconstruction tend to do what?",
+          "a": "**Underpredict** final implant size (~23 cc on average; accurate within ~2–4 sizes) — use as a starting point. `[157(6)] →` https://doi.org/10.1097/PRS.0000000000012581"
+        },
+        {
+          "q": "For propeller-flap necrosis, which factors predicted risk — and which commonly-assumed factor did **not**?",
+          "a": "**Age** and **arc of rotation** (OR 1.01/degree) predicted necrosis; **haemoglobin/haematocrit did NOT**. `[157(6)] →` https://doi.org/10.1097/PRS.0000000000012533"
+        },
+        {
+          "q": "Per the issue's nicotine cohort, what should patients be counselled, and why does switching to NRT/e-cigarettes not suffice?",
+          "a": "**Complete nicotine abstinence** — wound-complication odds were raised (OR ~5.5–13.5) across **all delivery methods, including NRT and e-cigarettes**. `[157(6)] →` https://doi.org/10.1097/PRS.0000000000012547"
+        },
+        {
+          "q": "What classification framework anchors management of vascular anomalies, and what two molecular pathways are the main therapeutic targets?",
+          "a": "The **ISSVA** framework (tumours vs malformations); **PI3K/AKT/mTOR** and **RAS/MAPK** — targeted by **sirolimus** and (for infantile haemangioma) **propranolol**. `[CME · 157(6)] →` https://doi.org/10.1097/PRS.0000000000012896"
+        },
+        {
+          "q": "What is an Orochi flap, and what problem does it solve?",
+          "a": "A secondary free flap anastomosed to a **primary free flap's pedicle** (fabricated chimeric flap) for **vessel-depleted necks**; 0% primary / 4% secondary flap loss, better than vein-grafting. `[157(6)] →` https://doi.org/10.1097/PRS.0000000000012557"
+        },
+        {
+          "q": "In sphincter pharyngoplasty, what does an **overlapping** inset trade off against an end-to-end inset?",
+          "a": "Better **speech** (balanced resonance 56.5% vs 34.1%) but more **obstructive sleep apnoea** (higher AHI). `[157(6)] →` https://doi.org/10.1097/PRS.0000000000012548"
+        },
+        {
+          "q": "For upper-limb lymphedema, which UHFUS measurement point and cutoff best identify disease?",
+          "a": "**Proximal volar forearm**; 1.46 mm cutoff (sens 70%/spec 100%); inter-limb difference >0.28 mm identified all cases (100%/100%). `[157(6)] →` https://doi.org/10.1097/PRS.0000000000012609"
+        },
+        {
+          "q": "What did the Ontario cost-utility analysis conclude about gender-affirming top surgery?",
+          "a": "It was **dominant** vs no surgery — cheaper (−$2,857) and more effective (+0.59 QALY) over 20 years. `[economic · 157(6)] →` https://doi.org/10.1097/PRS.0000000000012619"
+        },
+        {
+          "q": "Which novel organism did a 2bRAD-M + murine study implicate in capsular contracture, and what prevention was proposed?",
+          "a": "***Ralstonia pickettii*** (induces thicker, stiffer, more T-cell-infiltrated capsules); **hypochlorous-acid irrigation** proposed. `[preclinical · 157(6)] →` https://doi.org/10.1097/PRS.0000000000012570"
+        },
+        {
+          "q": "In the extended transconjunctival lower-lid blepharoplasty series, what unexpected benefit was reported beyond tear-trough correction?",
+          "a": "**Predictable improvement of the smile** (from releasing orbicularis origins), with no scleral show, fat necrosis 3.5%, revision 1.0%. `[157(6)] →` https://doi.org/10.1097/PRS.0000000000012545"
         }
       ]
     },

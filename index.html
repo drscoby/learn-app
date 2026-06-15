@@ -14,7 +14,7 @@
   :root{
     --bg:#0f172a; --bg2:#1e293b; --card:#1e293b; --card2:#273449;
     --txt:#e2e8f0; --mut:#94a3b8; --acc:#38bdf8; --acc2:#0ea5e9;
-    --good:#34d399; --bad:#fb7185; --line:#334155; --r:16px;
+    --good:#34d399; --bad:#fb7185; --warn:#fbbf24; --line:#334155; --r:16px;
   }
   @media (prefers-color-scheme: light){
     :root{ --bg:#f1f5f9; --bg2:#fff; --card:#fff; --card2:#f8fafc;
@@ -32,7 +32,7 @@
   .card{background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:16px; margin:10px 0; cursor:pointer; transition:transform .06s}
   .card:active{transform:scale(.99)}
   .card h2{margin:0 0 4px; font-size:17px}
-  .row{display:flex; align-items:center; gap:10px}
+  .row{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
   .pill{font-size:12px; color:var(--mut); background:var(--card2); border:1px solid var(--line); padding:3px 9px; border-radius:999px}
   .pill.due{color:#0f172a; background:var(--acc); border-color:var(--acc)}
   .bar-prog{height:6px; background:var(--card2); border-radius:999px; overflow:hidden; margin-top:10px}
@@ -43,6 +43,7 @@
   .btn{display:block; width:100%; padding:14px; border-radius:14px; border:none; font-size:16px; font-weight:600; cursor:pointer; margin-top:10px}
   .btn.primary{background:var(--acc); color:#06283d}
   .btn.ghost{background:var(--card); color:var(--txt); border:1px solid var(--line)}
+  .btn:disabled{opacity:.6}
   .qwrap{background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:22px 18px; min-height:200px; display:flex; flex-direction:column; justify-content:center}
   .qlabel{font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--mut); margin-bottom:10px}
   .qtext{font-size:19px; line-height:1.45}
@@ -63,6 +64,36 @@
   .done{color:var(--good); font-weight:600}
   footer.meta{position:fixed; bottom:0; left:0; right:0; text-align:center; font-size:11px; color:var(--mut); padding:8px; background:linear-gradient(transparent,var(--bg) 40%)}
   a{color:var(--acc)}
+  /* ---- CPD additions (v0.2 MCQ-of-the-day) ---- */
+  .hero{background:linear-gradient(135deg,var(--acc2),var(--acc)); color:#06283d; border-radius:var(--r); padding:18px; margin:4px 0 12px}
+  .hero .k{font-size:12px; letter-spacing:.12em; text-transform:uppercase; opacity:.85}
+  .hero h2{margin:4px 0 2px; font-size:22px}
+  .hero p{margin:0; font-size:14px; opacity:.9}
+  .hero .btn{background:#06283d; color:#e0f2fe; margin-top:14px}
+  .hero.calm{background:var(--card); color:var(--txt); border:1px solid var(--line)}
+  .hero.calm .k{opacity:.7}
+  .clock{display:flex; align-items:center; gap:8px; background:var(--card2); border:1px solid var(--line); border-radius:12px; padding:8px 10px; margin:0 0 16px; font-size:13px; color:var(--mut)}
+  .clock b{color:var(--txt)}
+  .clock .sp{flex:1}
+  .clock button{background:var(--card); border:1px solid var(--line); color:var(--txt); border-radius:10px; padding:7px 11px; font-size:13px; cursor:pointer; font-weight:600}
+  .sechead{font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--mut); margin:18px 2px 2px; display:flex; align-items:center; gap:8px}
+  .sechead::after{content:""; flex:1; height:1px; background:var(--line)}
+  .badge{font-size:11px; font-weight:700; padding:3px 9px; border-radius:999px; border:1px solid var(--line)}
+  .badge.none{color:var(--mut); background:var(--card2)}
+  .badge.prov{color:#3b2a06; background:var(--warn); border-color:var(--warn)}
+  .badge.full{color:#053527; background:var(--good); border-color:var(--good)}
+  .opt{display:block; width:100%; text-align:left; padding:13px 14px; border-radius:12px; border:1px solid var(--line); background:var(--card); color:var(--txt); font-size:15px; cursor:pointer; margin-top:8px; transition:transform .05s}
+  .opt:active{transform:scale(.995)}
+  .opt.correct{background:rgba(52,211,153,.18); border-color:var(--good)}
+  .opt.wrong{background:rgba(251,113,133,.16); border-color:var(--bad)}
+  .opt .mk{float:right; font-weight:700}
+  .feedback{margin-top:14px; padding:13px 14px; border-radius:12px; font-size:14px; line-height:1.5; background:var(--card2); border:1px solid var(--line)}
+  .feedback .tag{font-weight:700; display:block; margin-bottom:4px}
+  .feedback.ok .tag{color:var(--good)} .feedback.no .tag{color:var(--bad)}
+  .gatehint{font-size:13px; color:var(--mut); background:var(--card2); border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-top:10px}
+  .ctc{background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:16px; margin-top:12px}
+  .closedtag{display:inline-block; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--warn); border:1px solid var(--warn); border-radius:999px; padding:2px 8px; margin-bottom:10px}
+  .opentag{display:inline-block; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--acc); border:1px solid var(--acc); border-radius:999px; padding:2px 8px; margin-bottom:10px}
 </style>
 </head>
 <body>
@@ -70,11 +101,17 @@
 <footer class="meta" id="meta"></footer>
 <script>
 const PKEY="learn_progress_v1";
-const INTERVALS=[1,3,7,21,60]; // Leitner box -> days
-let DATA=null, PROG=load(), view={name:"home"};
+const CKEY="cpd_progress_v1";
+const INTERVALS=[1,3,7,21,60]; // Leitner box -> days (personal Learn quiz)
+// CPD demo schedule (compressed): Gate-2 retrieval i becomes due GAP*(i+1) demo-days after Gate 1 (first delayed, equal interval).
+const CPD_GAP=1;          // equal interval in demo-days
+const CTC_FOLLOWUP=2;     // demo-days after a 'Yes' commitment, ask "did you?"
+let DATA=null, CPD=null, PROG=load(), CP=loadCP(), view={name:"home"};
 
 function load(){ try{return JSON.parse(localStorage.getItem(PKEY))||{}}catch(e){return {}} }
 function save(){ localStorage.setItem(PKEY, JSON.stringify(PROG)); }
+function loadCP(){ try{return JSON.parse(localStorage.getItem(CKEY))||{day:0,mods:{}}}catch(e){return {day:0,mods:{}}} }
+function saveCP(){ localStorage.setItem(CKEY, JSON.stringify(CP)); }
 function today(){ const d=new Date(); d.setHours(0,0,0,0); return d.getTime(); }
 function addDays(ms,n){ return ms + n*86400000; }
 function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
@@ -89,7 +126,7 @@ function md(s){ // tiny markdown -> html (content is escaped first)
   s=s.replace(/\n{2,}/g,'<br><br>').replace(/\n/g,'<br>');
   return s;
 }
-// ---- progress helpers ----
+// ---- personal-Learn progress helpers (unchanged) ----
 function qstate(sid,i){ return (PROG.quiz&&PROG.quiz[sid]&&PROG.quiz[sid][i]) || null; }
 function setQ(sid,i,o){ PROG.quiz=PROG.quiz||{}; PROG.quiz[sid]=PROG.quiz[sid]||{}; PROG.quiz[sid][i]=o; save(); }
 function dueCount(sid,quiz){ let n=0; quiz.forEach((c,i)=>{ const st=qstate(sid,i); if(!st||st.due<=today()) n++; }); return n; }
@@ -97,30 +134,232 @@ function lessonDone(sid,n){ return PROG.lessons&&PROG.lessons[sid]&&PROG.lessons
 function setLesson(sid,n,v){ PROG.lessons=PROG.lessons||{}; PROG.lessons[sid]=PROG.lessons[sid]||{}; PROG.lessons[sid][n]=v; save(); }
 function subjProg(s){ const t=s.lessons.length||1; let d=0; s.lessons.forEach(l=>{ if(lessonDone(s.id,l.n)) d++; }); return Math.round(100*d/t); }
 
+// ---- CPD (v0.2 two-gate) helpers ----
+function cDay(){ return CP.day||0; }
+function advanceDay(){ CP.day=(CP.day||0)+1; saveCP(); render(); }
+function resetClock(){ CP.day=0; saveCP(); render(); }
+function resetCPD(){ if(confirm("Reset all CPD demo progress (modules, gates, commitments, clock)?")){ CP={day:0,mods:{}}; saveCP(); go("home"); } }
+function cmod(id){ return CPD.modules.find(m=>m.id===id); }
+function mstate(id){ CP.mods=CP.mods||{}; CP.mods[id]=CP.mods[id]||{g1:null,g2:{},ctc:null,credit:"none"}; return CP.mods[id]; }
+function completeGate1(id,score,total){
+  const m=mstate(id), mod=cmod(id), D=cDay();
+  m.g1={done:true,score,total};
+  mod.gate2.forEach((_,i)=>{ m.g2[i]=m.g2[i]||{}; m.g2[i].due=D+CPD_GAP*(i+1); m.g2[i].passed=false; });
+  m.credit="provisional"; saveCP();
+}
+function gradeGate2(id,i,ok){
+  const m=mstate(id);
+  m.g2[i]=m.g2[i]||{};
+  if(ok){ m.g2[i].passed=true; }
+  else { m.g2[i].passed=false; m.g2[i].due=cDay()+CPD_GAP; } // re-surface next demo-day
+  m.g2[i].seen=cDay();
+  // full credit when every gate-2 retrieval passed
+  const mod=cmod(id);
+  if(mod.gate2.every((_,k)=> m.g2[k] && m.g2[k].passed)) m.credit="full";
+  saveCP();
+}
+function setCTC(id,choice){
+  const m=mstate(id), D=cDay();
+  m.ctc={choice, day:D, followDone:false};
+  if(/^Yes/i.test(choice)) m.ctc.followDue=D+CTC_FOLLOWUP; // only chase a real commitment
+  saveCP();
+}
+function setCTCFollow(id,ans){ const m=mstate(id); if(m.ctc){ m.ctc.followDone=true; m.ctc.didIt=ans; saveCP(); } }
+// today's pushed items: due closed-book retrievals + due commitment follow-ups, interleaved
+function dailyItems(){
+  const out=[];
+  CPD.modules.forEach(mod=>{
+    const m=CP.mods&&CP.mods[mod.id]; if(!m||!m.g1||!m.g1.done) return;
+    mod.gate2.forEach((g,i)=>{ const st=m.g2[i]; if(st && !st.passed && st.due<=cDay()) out.push({type:"g2",id:mod.id,i}); });
+    if(m.ctc && m.ctc.followDue!=null && !m.ctc.followDone && m.ctc.followDue<=cDay()) out.push({type:"ctc",id:mod.id});
+  });
+  for(let k=out.length-1;k>0;k--){ const j=Math.floor(Math.random()*(k+1)); [out[k],out[j]]=[out[j],out[k]]; } // interleave
+  return out;
+}
+function credClass(c){ return c==="full"?"full":c==="provisional"?"prov":"none"; }
+function credLabel(c){ return c==="full"?"Full credit":c==="provisional"?"Provisional":"Not started"; }
+function nextDueDay(id){ const m=CP.mods&&CP.mods[id]; if(!m||!m.g1) return null; const mod=cmod(id);
+  let d=null; mod.gate2.forEach((_,i)=>{ const st=m.g2[i]; if(st&&!st.passed){ d=(d==null?st.due:Math.min(d,st.due)); } }); return d; }
+
 // ---- views ----
 function render(){
   const app=document.getElementById("app");
-  if(!DATA){ app.innerHTML='<div class="empty">No content yet.</div>'; return; }
   if(view.name==="home") return home(app);
+  if(view.name==="cmodule") return cmodule(app);
+  if(view.name==="cg1") return cgate1(app);
+  if(view.name==="daily") return daily(app);
+  if(!DATA){ app.innerHTML='<div class="empty">No content yet.</div>'; return; }
   if(view.name==="subject") return subject(app);
   if(view.name==="lesson") return lesson(app);
   if(view.name==="quiz") return quiz(app);
 }
 function home(app){
-  const totalDue=DATA.subjects.reduce((a,s)=>a+dueCount(s.id,s.quiz),0);
-  let h=`<header class="bar"><h1>Learn</h1></header>`;
-  if(totalDue>0) h+=`<button class="btn primary" onclick="startReview()">Review — ${totalDue} card${totalDue>1?'s':''} due</button>`;
-  DATA.subjects.forEach(s=>{
-    const due=dueCount(s.id,s.quiz), p=subjProg(s);
-    h+=`<div class="card" onclick='go("subject","${s.id}")'>
-      <h2>${esc(s.title)}</h2>
-      <div class="row"><span class="pill">${s.lessons.length} lessons</span>
-        <span class="pill">${s.quiz.length} cards</span>
-        ${due>0?`<span class="pill due">${due} due</span>`:`<span class="pill">✓ up to date</span>`}</div>
-      <div class="bar-prog"><i style="width:${p}%"></i></div></div>`;
-  });
+  let h=`<header class="bar"><h1>CPD</h1></header>`;
+  // ---- MCQ of the day ----
+  if(CPD && CPD.modules){
+    const due=dailyItems().length;
+    if(due>0){
+      h+=`<div class="hero"><div class="k">MCQ of the day</div>
+        <h2>${due} question${due>1?'s':''} due</h2>
+        <p>Closed-book spaced retrieval · ~30–60 seconds · one tap.</p>
+        <button class="btn" onclick="startDaily()">Start ›</button></div>`;
+    } else {
+      h+=`<div class="hero calm"><div class="k">MCQ of the day</div>
+        <h2>✓ All caught up</h2>
+        <p>Nothing due on demo-day ${cDay()}. Advance the clock to surface the next spaced retrieval.</p></div>`;
+    }
+    h+=`<div class="clock">Demo clock — <b>day ${cDay()}</b><span class="sp"></span>
+      <button onclick="advanceDay()">Advance day ▶</button>
+      <button onclick="resetClock()">Reset</button></div>`;
+    // ---- CPD modules ----
+    h+=`<div class="sechead">Modules</div>`;
+    CPD.modules.forEach(mod=>{
+      const m=CP.mods&&CP.mods[mod.id]; const cr=(m&&m.credit)||"none";
+      const nd=nextDueDay(mod.id);
+      h+=`<div class="card" onclick='go("cmodule",null,null,"${mod.id}")'>
+        <div class="row"><h2 style="flex:1">${esc(mod.title)}</h2><span class="badge ${credClass(cr)}">${credLabel(cr)}</span></div>
+        <div class="row"><span class="pill">${esc(mod.subject)}</span><span class="pill">${mod.gate1.length} MCQs</span>
+          ${m&&m.g1?`<span class="pill">${nd!=null?(nd<=cDay()?'retrieval due':'next day '+nd):'gate 2 ✓'}</span>`:`<span class="pill">not started</span>`}</div></div>`;
+    });
+    h+=`<div class="sub" style="text-align:center;margin-top:6px"><a onclick="resetCPD()" style="cursor:pointer">Reset demo</a></div>`;
+  }
+  // ---- personal Learn (existing engine) ----
+  if(DATA && DATA.subjects && DATA.subjects.length){
+    h+=`<div class="sechead">Personal Learn</div>`;
+    const totalDue=DATA.subjects.reduce((a,s)=>a+dueCount(s.id,s.quiz),0);
+    if(totalDue>0) h+=`<button class="btn primary" onclick="startReview()">Review — ${totalDue} card${totalDue>1?'s':''} due</button>`;
+    DATA.subjects.forEach(s=>{
+      const due=dueCount(s.id,s.quiz), p=subjProg(s);
+      h+=`<div class="card" onclick='go("subject","${s.id}")'>
+        <h2>${esc(s.title)}</h2>
+        <div class="row"><span class="pill">${s.lessons.length} lessons</span>
+          <span class="pill">${s.quiz.length} cards</span>
+          ${due>0?`<span class="pill due">${due} due</span>`:`<span class="pill">✓ up to date</span>`}</div>
+        <div class="bar-prog"><i style="width:${p}%"></i></div></div>`;
+    });
+  }
   app.innerHTML=h;
 }
+
+// ---- CPD module view ----
+function cmodule(app){
+  const mod=cmod(view.mid), m=mstate(view.mid);
+  const cr=m.credit||"none";
+  let h=`<header class="bar"><button class="back" onclick='go("home")'>‹</button><h1>Module</h1></header>
+    <div class="card" style="cursor:default">
+      <div class="row"><h2 style="flex:1">${esc(mod.title)}</h2><span class="badge ${credClass(cr)}">${credLabel(cr)}</span></div>
+      <div class="row" style="margin:2px 0 8px"><span class="pill">${esc(mod.subject)}</span><span class="pill">${esc(mod.cpd)}</span></div>
+      <div class="sub">${esc(mod.source)} <a href="${esc(mod.doi)}" target="_blank" rel="noopener">DOI ›</a></div>
+    </div>`;
+  // Gate 1
+  if(!m.g1||!m.g1.done){
+    h+=`<div class="gatehint"><span class="opentag">Gate 1 · open-book</span> Read the module, then a quick comprehension quiz primes attention. Passing logs <b>provisional</b> completion.</div>
+      <button class="btn primary" onclick='startGate1("${mod.id}")'>Start Gate 1 quiz — ${mod.gate1.length} MCQs</button>`;
+  } else {
+    h+=`<div class="gatehint"><span class="opentag">Gate 1 ✓</span> Scored ${m.g1.score}/${m.g1.total}. Provisional completion logged. Full credit comes from the spaced closed-book retrievals.</div>`;
+    // schedule line
+    const nd=nextDueDay(mod.id);
+    if(cr==="full"){
+      h+=`<div class="gatehint"><span class="closedtag">Gate 2 ✓ complete</span> All spaced retrievals passed closed-book. <b>Full CPD credit logged.</b></div>`;
+    } else {
+      h+=`<div class="gatehint"><span class="closedtag">Gate 2 · closed-book</span> ${mod.gate2.length} spaced retrievals (equal interval, first delayed). ${nd!=null?(nd<=cDay()?'<b>One is due now</b> — open “MCQ of the day”.':`Next due demo-day ${nd} (now day ${cDay()}).`):''}</div>`;
+    }
+    h+=`<button class="btn ghost" onclick='startGate1("${mod.id}")'>Re-take Gate 1 (open-book)</button>`;
+  }
+  // Commitment-to-change (after Gate 1)
+  if(m.g1&&m.g1.done){
+    h+=`<div class="ctc"><div class="qlabel">Commitment to change</div>
+      <div style="font-size:16px;margin-bottom:4px">${esc(mod.ctc.prompt)}</div>`;
+    if(!m.ctc){
+      mod.ctc.presets.forEach(p=>{ h+=`<button class="btn ghost" onclick='commitCTC("${mod.id}",${JSON.stringify(p).replace(/"/g,"&quot;")})'>${esc(p)}</button>`; });
+    } else {
+      h+=`<div class="feedback ok" style="margin-top:10px"><span class="tag">You committed</span>${esc(m.ctc.choice)}${m.ctc.followDue!=null?` — we'll ask “did you?” on demo-day ${m.ctc.followDue}.`:''}</div>`;
+      if(m.ctc.followDone) h+=`<div class="sub" style="margin-top:8px">Follow-up: ${esc(m.ctc.didIt)}</div>`;
+    }
+    h+=`</div>`;
+  }
+  app.innerHTML=h;
+}
+
+// ---- Gate 1 session (open-book MCQ, auto-marked, elaborated feedback) ----
+let CG=null;
+function startGate1(id){ CG={id, idx:0, answered:false, chosen:null, score:0}; view={name:"cg1"}; render(); window.scrollTo(0,0); }
+function cgate1(app){
+  const mod=cmod(CG.id), q=mod.gate1[CG.idx], total=mod.gate1.length;
+  let h=`<header class="bar"><button class="back" onclick='go("cmodule",null,null,"${CG.id}")'>‹</button>
+      <h1>Gate 1</h1><span class="sub">${CG.idx+1}/${total}</span></header>
+    <div class="qwrap" style="min-height:auto">
+      <div class="qlabel"><span class="opentag">Open-book</span> ${esc(mod.title)}</div>
+      <div class="qtext">${md(q.stem)}</div>`;
+  q.options.forEach((o,i)=>{
+    let cls="opt", mk="";
+    if(CG.answered){
+      if(i===q.correct){ cls+=" correct"; mk='<span class="mk">✓</span>'; }
+      else if(i===CG.chosen){ cls+=" wrong"; mk='<span class="mk">✗</span>'; }
+    }
+    h+=`<button class="${cls}" ${CG.answered?'disabled':''} onclick='answerG1(${i})'>${esc(o)}${mk}</button>`;
+  });
+  h+=`</div>`;
+  if(CG.answered){
+    const ok=CG.chosen===q.correct;
+    h+=`<div class="feedback ${ok?'ok':'no'}"><span class="tag">${ok?'Correct':'Not quite'}</span>${md(q.rationale)}</div>`;
+    h+=`<button class="btn primary" onclick="nextG1()">${CG.idx+1<total?'Next ›':'Finish'}</button>`;
+  }
+  app.innerHTML=h;
+}
+function answerG1(i){ if(CG.answered) return; CG.answered=true; CG.chosen=i; const q=cmod(CG.id).gate1[CG.idx]; if(i===q.correct) CG.score++; render(); }
+function nextG1(){
+  const mod=cmod(CG.id);
+  if(CG.idx+1<mod.gate1.length){ CG.idx++; CG.answered=false; CG.chosen=null; render(); window.scrollTo(0,0); }
+  else { completeGate1(CG.id,CG.score,mod.gate1.length); go("cmodule",null,null,CG.id); }
+}
+function commitCTC(id,choice){ setCTC(id,choice); render(); }
+
+// ---- Daily session: closed-book retrievals + commitment follow-ups ----
+let DS=null;
+function startDaily(){ DS={queue:dailyItems(), phase:"ask"}; view={name:"daily"}; render(); window.scrollTo(0,0); }
+function daily(app){
+  if(!DS || !DS.queue.length){
+    app.innerHTML=`<header class="bar"><button class="back" onclick='go("home")'>‹</button><h1>Done</h1></header>
+      <div class="empty">🎉 Caught up for demo-day ${cDay()}.<br><br>
+      <button class="btn primary" onclick='go("home")'>Home</button></div>`;
+    return;
+  }
+  const it=DS.queue[0], mod=cmod(it.id);
+  let h=`<header class="bar"><button class="back" onclick='go("home")'>‹</button><h1>MCQ of the day</h1>
+      <span class="sub">${DS.queue.length} left</span></header>`;
+  if(it.type==="g2"){
+    const g=mod.gate2[it.i];
+    h+=`<div class="qwrap" style="min-height:auto">
+      <div class="qlabel"><span class="closedtag">Closed-book</span> ${esc(mod.title)}</div>
+      <div class="qtext">${md(g.stem)}</div>`;
+    if(DS.phase==="reveal"){
+      h+=`<div class="atext"><b>Model answer.</b> ${md(g.answer)}</div>
+        <div class="feedback"><span class="tag">Why</span>${md(g.feedback)}</div>`;
+    }
+    h+=`</div>`;
+    if(DS.phase==="ask"){
+      h+=`<div class="sub" style="text-align:center;margin-top:8px">Recall it, then check yourself.</div>
+        <button class="btn primary" onclick="revealG2()">Show answer</button>`;
+    } else {
+      h+=`<div class="grade"><button class="btn bad" onclick="gradeG2(false)">Not quite</button>
+        <button class="btn good" onclick="gradeG2(true)">Got it</button></div>`;
+    }
+  } else { // ctc follow-up
+    h+=`<div class="qwrap" style="min-height:auto">
+      <div class="qlabel">Commitment follow-up · ${esc(mod.title)}</div>
+      <div class="qtext">You committed: “${esc((CP.mods[it.id].ctc||{}).choice||'')}”.<br>Did you?</div></div>
+      <button class="btn good" onclick='answerFollow("Yes — done")'>Yes — done it</button>
+      <button class="btn ghost" onclick='answerFollow("Not yet")'>Not yet</button>
+      <button class="btn ghost" onclick='answerFollow("Changed my mind")'>Changed my mind</button>`;
+  }
+  app.innerHTML=h;
+}
+function revealG2(){ DS.phase="reveal"; render(); }
+function gradeG2(ok){ const it=DS.queue.shift(); gradeGate2(it.id,it.i,ok); DS.phase="ask"; render(); window.scrollTo(0,0); }
+function answerFollow(ans){ const it=DS.queue.shift(); setCTCFollow(it.id,ans); DS.phase="ask"; render(); window.scrollTo(0,0); }
+
+// ---- personal-Learn views (unchanged) ----
 function curSubject(){ return DATA.subjects.find(s=>s.id===view.sid); }
 function subject(app){
   const s=curSubject(); const tab=view.tab||"lessons";
@@ -158,14 +397,12 @@ function lesson(app){
     <button class="btn primary" style="margin-top:12px" onclick='startQuiz("${s.id}")'>Quiz me on this subject</button>`;
   app.innerHTML=h;
 }
-// ---- quiz session ----
 let SESS=null;
 function buildSession(subjectIds){
   const q=[];
   DATA.subjects.forEach(s=>{ if(subjectIds && !subjectIds.includes(s.id)) return;
     s.quiz.forEach((c,i)=>{ const st=qstate(s.id,i); if(!st || st.due<=today()) q.push({sid:s.id,i,c}); });
   });
-  // shuffle
   for(let k=q.length-1;k>0;k--){ const j=Math.floor(Math.random()*(k+1)); [q[k],q[j]]=[q[j],q[k]]; }
   return q;
 }
@@ -197,27 +434,29 @@ function grade(ok){
   const item=SESS.queue.shift();
   const st=qstate(item.sid,item.i)||{box:0};
   if(ok){ const box=Math.min((st.box||0)+1,5); setQ(item.sid,item.i,{box,due:addDays(today(),INTERVALS[box-1])}); }
-  else { setQ(item.sid,item.i,{box:1,due:addDays(today(),1)}); SESS.queue.push(item); } // requeue this session
+  else { setQ(item.sid,item.i,{box:1,due:addDays(today(),1)}); SESS.queue.push(item); }
   SESS.flipped=false; render();
 }
 function markLesson(sid,n){ setLesson(sid,n,!lessonDone(sid,n)); render(); }
 function openLesson(sid,n){ view={name:"lesson",sid,n}; render(); window.scrollTo(0,0); }
-function go(name,sid,tab){ view={name,sid,tab}; render(); window.scrollTo(0,0); }
+function go(name,sid,tab,mid){ view={name,sid,tab,mid}; render(); window.scrollTo(0,0); }
 
 // ---- load + OTA ----
+async function loadJSON(name){
+  try{ const r=await fetch(name+"?cb="+Date.now(),{cache:"no-store"}); if(r.ok) return await r.json(); }catch(e){}
+  try{ const r=await caches.match(name); if(r) return await r.json(); }catch(e){}
+  return null;
+}
 async function loadContent(){
-  try{
-    const r=await fetch("content.json?cb="+Date.now(),{cache:"no-store"});
-    if(r.ok){ DATA=await r.json(); paint(); return; }
-  }catch(e){}
-  try{ const r=await caches.match("content.json"); if(r){ DATA=await r.json(); } }catch(e){}
+  [DATA,CPD]=await Promise.all([loadJSON("content.json"), loadJSON("cpd-content.json")]);
   paint();
 }
 function paint(){
   view={name:"home"}; render();
-  if(DATA) document.getElementById("meta").textContent=
-    "content updated "+ new Date(DATA.generated).toLocaleDateString() +
-    " · "+ DATA.subjects.length +" subjects";
+  const parts=[];
+  if(CPD) parts.push(CPD.modules.length+" CPD modules");
+  if(DATA) parts.push(DATA.subjects.length+" Learn subjects");
+  document.getElementById("meta").textContent = parts.length? "v0.2 · "+parts.join(" · ") : "";
 }
 loadContent();
 if("serviceWorker" in navigator){ navigator.serviceWorker.register("sw.js").catch(()=>{}); }

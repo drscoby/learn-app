@@ -1,0 +1,187 @@
+{
+  "generated": "2026-06-15T12:00:00+10:00",
+  "schema": "cpd-v0.2",
+  "note": "v0.2 MCQ-of-the-day two-gate prototype content. Source: Learn-Product/mvp-content-set-v0.2.md. Studio/general zone, no PHI. Gate-1 = open-book MCQ (auto-marked); gate2 = closed-book recall (self-assessed); ctc = commitment-to-change presets.",
+  "modules": [
+    {
+      "id": "m1",
+      "title": "Dermal fillers",
+      "subject": "Injectables",
+      "source": "Pino A, et al. Efficacy and Safety of a New Crosslinked Hyaluronic Acid Dermal Filler for Facial Volume Restoration. Aesthet Surg J Open Forum. 2026;8:ojag082.",
+      "doi": "https://doi.org/10.1093/asjof/ojag082",
+      "cpd": "Educational activities",
+      "gate1": [
+        {"stem": "What was the study design and size?", "options": ["Retrospective review of 50 patients", "Prospective single-injection trial in 203 volunteers", "Randomised trial of 2 fillers", "Case series of 20"], "correct": 1, "rationale": "203 volunteers with facial ageing received a single injection of the test filler, with follow-up to 9 months."},
+        {"stem": "How long was efficacy demonstrated?", "options": ["3 months", "6 months", "Up to 9 months", "12 months"], "correct": 2, "rationale": "MFVLS and WSRS improvements were significant at both 6 and 9 months."},
+        {"stem": "Which outcomes improved significantly at 6 and 9 months?", "options": ["Mid-Face Volume Loss Scale and Wrinkle Severity Rating Scale", "Patient weight and BMI", "Skin-cancer incidence", "Operative time"], "correct": 0, "rationale": "MFVLS and WSRS both showed statistically significant improvement at 6 and 9 months."}
+      ],
+      "gate2": [
+        {"stem": "Roughly how long did a single injection maintain significant mid-face and wrinkle improvement?", "answer": "Up to ~9 months.", "feedback": "Significant MFVLS and WSRS gains were sustained at both 6 and 9 months after one injection."},
+        {"stem": "Which two validated scales improved significantly at 6 and 9 months?", "answer": "MFVLS (Mid-Face Volume Loss Scale) and WSRS (Wrinkle Severity Rating Scale).", "feedback": "Both showed statistically significant improvement — the efficacy signal rests on these two scales."}
+      ],
+      "ctc": {"prompt": "Change how you counsel patients on HA filler longevity?", "presets": ["Yes — quote ~9-month durability", "Already do this", "No change"]}
+    },
+    {
+      "id": "m2",
+      "title": "Neuromodulators",
+      "subject": "Injectables",
+      "source": "Huang J, et al. A Real-World Study of Patient and Physician Satisfaction With Repeated AbobotulinumtoxinA Treatment of Glabellar Lines in Chinese Patients. Aesthet Surg J Open Forum. 2026;8:ojag066.",
+      "doi": "https://doi.org/10.1093/asjof/ojag066",
+      "cpd": "Educational activities",
+      "gate1": [
+        {"stem": "What was the treatment schedule?", "options": ["Single injection", "3 injection cycles, 3–6 months apart", "Monthly for a year", "2 cycles 12 months apart"], "correct": 1, "rationale": "Participants received 3 cycles of aboBoNT-A in the glabellar area, 3 to 6 months apart."},
+        {"stem": "Patient satisfaction 3 weeks after the third injection (primary endpoint)?", "options": ["70%", "85%", "100% (71.1% very satisfied)", "64%"], "correct": 2, "rationale": "At 3 weeks after the third injection, 100% of patients were satisfied (very satisfied 71.1%)."},
+        {"stem": "Physician-rated ≥1-grade improvement at maximum frown at 3 weeks?", "options": ["~50%", "~64%", "≥90% of patients", "100%"], "correct": 2, "rationale": "Physicians reported ≥1-grade improvement in ≥90% of patients at 3 weeks in each cycle (≥64% at ~5 months)."}
+      ],
+      "gate2": [
+        {"stem": "Patient satisfaction 3 weeks after the third cycle?", "answer": "100% (71.1% very satisfied).", "feedback": "The primary endpoint: every patient satisfied at 3 weeks post-third-injection."},
+        {"stem": "What interval was used between treatment cycles?", "answer": "3–6 months.", "feedback": "Three cycles delivered 3–6 months apart — the real-world re-treatment cadence."}
+      ],
+      "ctc": {"prompt": "Change your glabellar dosing or review interval?", "presets": ["Yes — adjust my interval", "Already do this", "No change"]}
+    },
+    {
+      "id": "m3",
+      "title": "Aesthetic breast surgery",
+      "subject": "Aesthetic breast surgery",
+      "source": "Aldaghri F. The Impact of Breast Reduction Surgery on Mental Health and Well-Being: A Systematic Review. Aesthet Surg J Open Forum. 2026;8:ojag067.",
+      "doi": "https://doi.org/10.1093/asjof/ojag067",
+      "cpd": "Educational activities",
+      "gate1": [
+        {"stem": "How many studies were included, and from how many records?", "options": ["12 from 1,000", "7 from 442 records", "27 from 1,068", "5 from 100"], "correct": 1, "rationale": "Out of 442 records identified, 7 studies met inclusion criteria."},
+        {"stem": "What were the consistent psychological findings?", "options": ["No change in mood", "Improved self-esteem and body image, reduced depression and anxiety", "Increased anxiety", "Worse quality of life"], "correct": 1, "rationale": "Studies consistently showed improved self-esteem, body image and mental health with reductions in depression and anxiety (p<.05)."},
+        {"stem": "What caveat did the author emphasise?", "options": ["Surgery should be avoided", "Benefits must be balanced against surgical risks; preoperative psychological evaluation is needed", "No psychological screening is required", "Results apply only to cancer reconstruction"], "correct": 1, "rationale": "Benefits must be balanced against surgical/ethical considerations, emphasising preoperative psychological evaluation and counselling."}
+      ],
+      "gate2": [
+        {"stem": "What were the consistent psychological outcomes after breast reduction?", "answer": "Improved self-esteem and body image; reduced depression and anxiety.", "feedback": "A consistent direction of benefit across the included studies (p<.05)."},
+        {"stem": "What pre-operative step did the author emphasise?", "answer": "Psychological evaluation / counselling before surgery.", "feedback": "Benefit is real but must be weighed against surgical and ethical considerations — hence pre-op psychological assessment."}
+      ],
+      "ctc": {"prompt": "Change how you discuss psychological benefit when consenting reduction patients?", "presets": ["Yes — add it to my consent", "Already do this", "No change"]}
+    },
+    {
+      "id": "m4",
+      "title": "Facial rejuvenation surgery",
+      "subject": "Facial rejuvenation surgery",
+      "source": "Lee I, et al. Safety Profile of Submandibular Gland Reduction and Parotid-Tail Minimal Shaving in Deep Neck Lifting: A 341-Patient East Asian Series. Aesthet Surg J Open Forum. 2026;8:ojag062.",
+      "doi": "https://doi.org/10.1093/asjof/ojag062",
+      "cpd": "Educational activities",
+      "gate1": [
+        {"stem": "How many patients were in the series?", "options": ["81", "240", "341", "20"], "correct": 2, "rationale": "341 consecutive East Asian patients underwent deep neck lifting."},
+        {"stem": "What was the rate of permanent nerve injury?", "options": ["1.47%", "0.59%", "None (0)", "5%"], "correct": 2, "rationale": "Transient cervical-branch (1.47%) and marginal mandibular (0.59%) weakness occurred, but no permanent nerve injury was observed."},
+        {"stem": "What did the authors conclude?", "options": ["The procedures are unsafe", "Selective salivary-gland reduction during deep neck lifting had low complication rates and appears safe when selectively applied", "Routine gland removal is mandatory", "Parotid shaving should be abandoned"], "correct": 1, "rationale": "Both SMG reduction and capsule-preserving parotid-tail shaving showed low complication rates."}
+      ],
+      "gate2": [
+        {"stem": "In the 341-patient series, what were the permanent nerve-injury rate and the transient marginal mandibular weakness rate?", "answer": "0 permanent; 0.59% transient marginal mandibular weakness.", "feedback": "No permanent injuries; only transient, low-rate weakness — the basis for the safety claim."},
+        {"stem": "Was selective salivary-gland reduction concluded to be safe?", "answer": "Yes — low complication rates when selectively applied.", "feedback": "Both SMG reduction and capsule-preserving parotid-tail shaving had low complication rates."}
+      ],
+      "ctc": {"prompt": "Change your approach to submandibular fullness in neck lift?", "presets": ["Yes — consider selective reduction", "Already do this", "No change"]}
+    },
+    {
+      "id": "m5",
+      "title": "Energy devices & skin",
+      "subject": "Energy-based devices & skin",
+      "source": "Kumar N, et al. The Efficacy and Safety of Radiofrequency Microneedling for Melasma: A Systematic Review and Qualitative Evidence Synthesis. Aesthet Surg J Open Forum. 2026;8:ojag075.",
+      "doi": "https://doi.org/10.1093/asjof/ojag075",
+      "cpd": "Educational activities",
+      "gate1": [
+        {"stem": "Why is radiofrequency microneedling (RFMN) proposed as advantageous for melasma in Fitzpatrick III–V?", "options": ["It bleaches the epidermis", "It targets dermal pathology while minimising epidermal injury, with low post-inflammatory hyperpigmentation", "It is cheaper", "It removes the need for sunscreen"], "correct": 1, "rationale": "RFMN targets dermal pathology while sparing the epidermis, with a low incidence of PIH in darker phototypes."},
+        {"stem": "How long were improvements in MASI/melanin indices maintained?", "options": ["1 month", "Up to 6 months", "2 years", "Not reported"], "correct": 1, "rationale": "Improvements were maintained up to 6 months across the 12 included studies."},
+        {"stem": "Which combination produced greater pigment reduction than monotherapy?", "options": ["RFMN + oral steroids", "RFMN + low-fluence Q-switched Nd:YAG laser", "RFMN + cryotherapy", "RFMN + dermabrasion"], "correct": 1, "rationale": "Combination with low-fluence Q-switched Nd:YAG produced greater pigment reduction."}
+      ],
+      "gate2": [
+        {"stem": "Why is RFMN advantageous in Fitzpatrick III–V skin?", "answer": "It targets the dermis while sparing the epidermis → low post-inflammatory hyperpigmentation.", "feedback": "Epidermal sparing is the key reason PIH risk stays low in darker phototypes."},
+        {"stem": "Which laser combination beat RFMN monotherapy for pigment reduction?", "answer": "Low-fluence Q-switched Nd:YAG laser.", "feedback": "Adding low-fluence QS Nd:YAG produced greater pigment reduction than RFMN alone."}
+      ],
+      "ctc": {"prompt": "Consider RFMN for melasma in darker phototypes?", "presets": ["Yes — add to my options", "Already do this", "No change"]}
+    },
+    {
+      "id": "m6",
+      "title": "Body contouring — abdominoplasty + hernia",
+      "subject": "Body contouring surgery",
+      "source": "Alaniz L, et al. Combining Abdominal Hernia Repair With Abdominoplasty—Is it Safe? Aesthet Surg J Open Forum. 2026;8:ojag069.",
+      "doi": "https://doi.org/10.1093/asjof/ojag069",
+      "cpd": "Educational activities",
+      "gate1": [
+        {"stem": "What was the 30-day surgical-site-occurrence (SSO) rate?", "options": ["5%", "15% (2 seromas, 1 chronic drainage)", "50%", "0%"], "correct": 1, "rationale": "SSOs occurred in 3 of 20 patients (15%): 2 seromas (10%) and 1 chronic drainage (5%)."},
+        {"stem": "What was the hernia recurrence rate at a mean 27.3 months?", "options": ["15%", "10%", "None", "5%"], "correct": 2, "rationale": "No hernia recurrences were identified at mean follow-up of 27.3 months."},
+        {"stem": "What is the key limitation of these conclusions?", "options": ["Large multicentre RCT bias", "Small (n=20), retrospective, carefully selected cohort", "No follow-up", "No mesh used"], "correct": 1, "rationale": "The authors note a limited cohort of carefully selected patients; larger prospective studies are warranted."}
+      ],
+      "gate2": [
+        {"stem": "What were the SSO rate and the hernia-recurrence rate at ~27 months?", "answer": "15% SSO; 0 hernia recurrence.", "feedback": "Surgical-site occurrences in 3/20 (15%); no recurrences at mean 27.3 months."},
+        {"stem": "What is the key limitation when interpreting this?", "answer": "Small (n=20), retrospective, carefully selected cohort.", "feedback": "The safety signal is real but fragile — larger prospective studies are warranted."}
+      ],
+      "ctc": {"prompt": "Change whether you combine hernia repair with abdominoplasty?", "presets": ["Yes — reconsider combining", "Already do this", "No change"]}
+    },
+    {
+      "id": "m7",
+      "title": "Body contouring — patient preferences",
+      "subject": "Body contouring surgery",
+      "source": "Bhatia SS, et al. Perceptions of Female Abdominal Muscle Definition: A Crowdsourced Analysis of Contour Preferences. Aesthet Surg J Open Forum. 2026;8:ojag083.",
+      "doi": "https://doi.org/10.1093/asjof/ojag083",
+      "cpd": "Educational activities",
+      "gate1": [
+        {"stem": "Which degree of abdominal etching was rated most attractive overall?", "options": ["Extreme contour", "Moderate contour", "Basic contour (73%)", "No preference"], "correct": 2, "rationale": "73% found basic contour most attractive, vs 11% moderate and 16% extreme."},
+        {"stem": "How many responses were analysed?", "options": ["203", "341", "976", "15,155"], "correct": 2, "rationale": "976 responses were analysed."},
+        {"stem": "What is the clinical implication for high-definition liposuction?", "options": ["Push maximum etching for all", "Patient preference skews to less-contoured results — temper extreme etching against what patients actually find attractive", "Avoid abdominal contouring entirely", "Preference is identical across all groups"], "correct": 1, "rationale": "Respondents across demographics viewed less-contoured abdomens as more attractive than highly contoured ones."}
+      ],
+      "gate2": [
+        {"stem": "Which degree of female abdominal etching did most respondents find most attractive?", "answer": "Basic contour (73%).", "feedback": "Basic beat moderate (11%) and extreme (16%) by a wide margin."},
+        {"stem": "What is the implication for high-definition liposuction?", "answer": "Temper extreme etching toward what patients actually prefer.", "feedback": "Preference skews to less-contoured results — a caution against maximal etching."}
+      ],
+      "ctc": {"prompt": "Temper how aggressively you etch in hi-def lipo?", "presets": ["Yes — temper my etching", "Already do this", "No change"]}
+    },
+    {
+      "id": "m8",
+      "title": "Rhinoplasty (full-text grounded)",
+      "subject": "Rhinoplasty",
+      "source": "Bohler F, et al. Fresh Frozen vs Autologous Costal Cartilage in Rhinoplasty: A Meta-Analysis of Complication Rates. Aesthet Surg J Open Forum. 2026;8:ojag072.",
+      "doi": "https://doi.org/10.1093/asjof/ojag072",
+      "cpd": "Educational activities",
+      "gate1": [
+        {"stem": "Which two complications were significantly lower with fresh frozen (FFCC) vs autologous (ACC) costal cartilage?", "options": ["Infection and resorption", "Warping and revision surgery", "Resorption and revision", "Infection and warping"], "correct": 1, "rationale": "Warping 1.2% vs 3.9% (p=.00038) and revision 1.3% vs 3.4% (p=.0029) were significant; infection (p=.34) and resorption (p=.25) were not."},
+        {"stem": "Infection was 1.7% (FFCC) vs 2.3% (ACC), p=.34 — best interpretation?", "options": ["FFCC significantly reduces infection", "No statistically significant difference", "ACC significantly reduces infection", "Clinically but not statistically significant"], "correct": 1, "rationale": "p=.34 > .05, so the difference is not statistically significant."},
+        {"stem": "Why caution against calling FFCC definitively superior?", "options": ["Large RCTs with long follow-up", "Most studies retrospective, serious risk of bias (23/27), short follow-up", "FFCC had higher infection", "Not PRISMA-compliant"], "correct": 1, "rationale": "23 of 27 studies rated serious risk (ROBINS-I); findings framed as hypothesis-generating."}
+      ],
+      "gate2": [
+        {"stem": "Which complications differed significantly between FFCC and ACC, and in which direction?", "answer": "Warping and revision were significantly lower with FFCC; infection and resorption were not significantly different.", "feedback": "Warping (p=.00038) and revision (p=.0029) favoured FFCC; infection (p=.34) and resorption (p=.25) were NS."},
+        {"stem": "Why should the FFCC result be interpreted cautiously?", "answer": "Mostly retrospective; 23/27 studies at serious risk of bias; short follow-up.", "feedback": "The evidence is hypothesis-generating, not definitive — a clean example of statistical signal tempered by risk-of-bias."}
+      ],
+      "ctc": {"prompt": "Will FFCC change your costal-cartilage graft selection?", "presets": ["Yes — reconsider FFCC", "Already do this", "No change"]}
+    },
+    {
+      "id": "m9",
+      "title": "Aesthetic breast — post-MWL",
+      "subject": "Aesthetic breast surgery",
+      "source": "Massarwa S, et al. Reshaping the Postbariatric Breast: A Single-center Experience With the Dermal Suspension Parenchymal Reshaping Mastopexy Technique. Plast Reconstr Surg Glob Open. 2026;14(6):e7798.",
+      "doi": "https://doi.org/10.1097/GOX.0000000000007798",
+      "cpd": "Educational activities",
+      "gate1": [
+        {"stem": "What was the cohort size?", "options": ["50 patients", "8 patients (15 breasts)", "341 patients", "20 patients"], "correct": 1, "rationale": "8 patients underwent DSPR mastopexy, including 1 unilateral case, for 15 operative breasts."},
+        {"stem": "What complication occurred?", "options": ["Multiple flap losses", "One seroma (6.7%), managed conservatively; no others", "15% SSO", "Two recurrences"], "correct": 1, "rationale": "One minor complication — a seroma in 1 of 15 breasts (6.7%); no other complications."},
+        {"stem": "What is the main limitation when interpreting the durable results?", "options": ["No follow-up", "Very small series (8 patients)", "No patient-reported outcomes", "Animal study"], "correct": 1, "rationale": "Despite 5-year median follow-up and high BREAST-Q satisfaction, the series is only 8 patients."}
+      ],
+      "gate2": [
+        {"stem": "What were the cohort size and the complication in the DSPR mastopexy series?", "answer": "8 patients / 15 breasts; 1 seroma (6.7%).", "feedback": "A single minor seroma, managed conservatively — no other complications."},
+        {"stem": "What is the main limitation of the durable-result claim?", "answer": "Very small series (8 patients).", "feedback": "Five-year follow-up and high BREAST-Q are encouraging, but n=8 caps the strength of the claim."}
+      ],
+      "ctc": {"prompt": "Consider DSPR mastopexy for postbariatric patients?", "presets": ["Yes — add to my options", "Already do this", "No change"]}
+    },
+    {
+      "id": "m10",
+      "title": "Body contouring — waist narrowing",
+      "subject": "Body contouring surgery",
+      "source": "Manzaneda Cipriani RM, et al. Waist Reduction Surgery by Rib Incurvation: A New Approach for Waist Narrowing. Plast Reconstr Surg Glob Open. 2026;14(5):e7754.",
+      "doi": "https://doi.org/10.1097/GOX.0000000000007754",
+      "cpd": "Educational activities",
+      "gate1": [
+        {"stem": "How did the two techniques (RibXcar vs IncurvationXribs) compare for efficacy at 6 months?", "options": ["RibXcar far superior", "Comparable, significant waist reduction in both", "Neither worked", "IncurvationXribs far superior on waist size"], "correct": 1, "rationale": "Both achieved significant waist reduction at 6 months with comparable effectiveness."},
+        {"stem": "How did they differ on safety?", "options": ["No difference", "IncurvationXribs had less postoperative pain and no complications", "IncurvationXribs had more complications", "Both had high complication rates"], "correct": 1, "rationale": "IncurvationXribs was associated with lower postoperative pain and no complications."},
+        {"stem": "What complications occurred in the RibXcar group?", "options": ["None", "Two — chronic pain and a bicortical fracture", "Five seromas", "One infection"], "correct": 1, "rationale": "In the RibXcar group, 2 complications occurred (chronic pain and a bicortical fracture)."}
+      ],
+      "gate2": [
+        {"stem": "How did IncurvationXribs compare to RibXcar on efficacy and safety?", "answer": "Comparable waist reduction; less postoperative pain and fewer complications.", "feedback": "Efficacy was a wash; IncurvationXribs won on the safety margin."},
+        {"stem": "What complications occurred in the RibXcar group?", "answer": "Chronic pain and a bicortical fracture.", "feedback": "Two complications in RibXcar vs none in IncurvationXribs — the safety differentiator."}
+      ],
+      "ctc": {"prompt": "Change your approach to / counselling on waist-narrowing rib procedures?", "presets": ["Yes — update my counselling", "Already do this", "No change"]}
+    }
+  ]
+}
