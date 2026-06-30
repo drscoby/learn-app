@@ -1,6 +1,362 @@
 {
-  "generated": "2026-06-14T08:05:08+00:00",
+  "generated": "2026-06-30T19:33:18+00:00",
   "subjects": [
+    {
+      "id": "ai-control-of-the-home",
+      "title": "AI Control of the Home",
+      "lessons": [
+        {
+          "n": 1,
+          "title": "The audit reframe & the safe first trial",
+          "body": "**Goal:** by the end you can explain *why* the headline use of AI-on-home is the wrong target, name where the real value is, and describe the safe first thing to actually do.\n\nPicture the demo everyone shows: *\"Hey Claude, turn on the lounge lights.\"* It's a magic trick — and it's the **least** useful thing an LLM does for your home, for two reasons. First, you've already got that: a $0 local voice intent engine flips lights instantly without any LLM. Second, the moment you ask the LLM to *write* config — *\"build me an automation that…\"* — it produces YAML and Jinja templates that are **subtly wrong** often enough that you can't trust them unchecked. The flashy uses are the weakest.\n\nSo where's the gold? In **reading and reasoning over a sprawling configuration you can't hold in your head** — i.e. **audit and debug**. *\"Why does this automation misfire?\"* (an LLM that can read execution **traces** spots the failing condition in seconds). *\"What in my config is deprecated?\"* *\"Consolidate these five near-identical scripts.\"* *\"Is my nightly backup actually running, or silently failing?\"* That last one is the quiet killer of self-hosted setups — a job that errors silently, a sensor that went `unavailable` weeks ago — and an LLM with **read access** surfaces it proactively. Even \"build me an automation\" is really an audit task wearing a hat: your job is to **review the draft**, not type the YAML.\n\nWhich tells you exactly how to start — and to start *safe*. The on-ramp is a **read-only config audit**: run the community `ha-mcp` server in **Read-Only Mode**, point it at your config, traces, history and logs, and ask *\"what's broken, deprecated, or silently failing?\"* It's the lowest-risk, highest-value, fully-reversible first move. You give the LLM **nothing writable** and it still earns its keep on day one. (Setup detail comes in L2–L5; the principle is: read before you let it write.)",
+          "check": "*Your friend says \"AI on Home Assistant is pointless — I can already turn on lights with my voice.\" What's the better use you'd point them to, and what's the safe first thing to do?*",
+          "full": true
+        },
+        {
+          "n": 2,
+          "title": "The two connection paths",
+          "body": "Native MCP Server (Assist API, control-only) vs community `ha-mcp` (REST+WS, audit/build, 84 tools, traces); the context-cost knob.",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 3,
+          "title": "Local vs cloud & the privacy fork",
+          "body": "Local MCP proxy vs public HA; connection-location vs model-location; default-to-local.",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 4,
+          "title": "Claude vs a local LLM",
+          "body": "Ollama + tool-capable Qwen3; local voice (Wyoming/Whisper/Piper); the trade-off matrix; best-per-job.",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 5,
+          "title": "Safe operating patterns",
+          "body": "The five guardrails; what NEVER to expose; earning write access one reviewed task at a time.",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 6,
+          "title": "Risks & staying current",
+          "body": "Prompt injection via untrusted data; MCP/STDIO disclosures; LLM config errors; why this set refreshes monthly.",
+          "check": "",
+          "full": false
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Where is the real value of AI on a smart home — and what's the trap?",
+          "a": "Value = **audit/debug** (why an automation misfires, deprecated config, silent failures, refactors). Trap = treating \"turn on a light\" / \"build me an automation\" as the prize — least valuable, most error-prone. [wiki/01 · 2026.6]"
+        },
+        {
+          "q": "Name the two connection paths from an LLM to Home Assistant and the key difference.",
+          "a": "(a) HA's **native MCP Server** (via the **Assist API** — control/query *exposed* entities only); (b) community **`ha-mcp`** (via **REST + WebSocket** — adds config, automations, traces, dashboards: build/audit). [wiki/02 · v7.3.0]"
+        },
+        {
+          "q": "Which path lets an LLM read automation traces and audit config, and why does that matter?",
+          "a": "**`ha-mcp`** (deep config search + traces + logs). It matters because the audit reframe (Q1) needs *reading* the config, which the native control-only path can't do. [wiki/02 · v7.3.0]"
+        },
+        {
+          "q": "The privacy fork: when does pointing Claude at HA require HA to be public, and how do you avoid it?",
+          "a": "A **remote custom connector** is brokered through Anthropic's cloud → HA must be **public**. Avoid it with a **local MCP proxy** (`mcp-proxy` + a long-lived token) → HA stays on-LAN. [wiki/03 · 2026.6]"
+        },
+        {
+          "q": "A local MCP proxy keeps the *connection* on-LAN. Does it keep your home *data* off the cloud?",
+          "a": "**No** — if the model is **Claude**, state/prompts still go to Anthropic's API to be reasoned over. The proxy fixes topology, not model location. For data-on-network too you need a **local LLM**. [wiki/03, wiki/04 · 2026.6]"
+        },
+        {
+          "q": "Claude vs a local LLM for home control — the recommended split?",
+          "a": "**Best-per-job:** local model (Ollama + tool-capable **Qwen3**) for the always-on control/voice layer (privacy + offline); **Claude** for deep audit/refactor over a local connection. Not one-tool-for-all. [wiki/04 · 2026.6]"
+        },
+        {
+          "q": "Which models can control Home Assistant via Ollama?",
+          "a": "**Only models that support Tools.** Control is an experimental feature scoped by exposed entities. [wiki/04 · 2026.6]"
+        },
+        {
+          "q": "Name the fully-local voice stack.",
+          "a": "**Wyoming** protocol gluing **Whisper/faster-whisper** or **Speech-to-Phrase** (STT) + **Piper** (TTS) + optional small local LLM via Assist. No audio leaves the house. [wiki/04 · 2026.6]"
+        },
+        {
+          "q": "The five guardrails for letting an LLM near a real home?",
+          "a": "**Read-only by default · draft-not-deploy · least-privilege exposure · local-first topology · treat all device/state text as untrusted data (not instructions).** [wiki/05 · v7.3.0]"
+        },
+        {
+          "q": "What's the safe first trial, and what should you NEVER expose?",
+          "a": "Safe first trial = a **read-only config audit** (`ha-mcp` Read-Only Mode). Never expose: live credentials, **locks/alarms/garage/gates**, structural/destructive tools (recorder, OS/Supervisor, writable backups) to an autonomous loop. [wiki/05 · v7.3.0]"
+        },
+        {
+          "q": "Why is \"treat device data as untrusted\" a security rule, not a slogan?",
+          "a": "Device names, entity states, calendar/camera/notification text are attacker-influenceable; instructions hidden there are **indirect prompt injection**. OWASP: tool returns are *data, not instructions*. [wiki/06 · 2026]"
+        },
+        {
+          "q": "What changed in `ha-mcp` v7.3.0 that proves why this set refreshes monthly?",
+          "a": "`ha_config_set_yaml` was **moved to beta** (now needs a feature flag + the custom component) — a real breaking change in a fast-moving dependency. [wiki/02, wiki/06 · v7.3.0]"
+        }
+      ]
+    },
+    {
+      "id": "adult-learning-cme-retention",
+      "title": "Adult Learning & CME Retention",
+      "lessons": [],
+      "quiz": [
+        {
+          "q": "Why does an *open-book* quiz capture little of the testing effect?",
+          "a": "Because the benefit comes from **effortful retrieval from memory** — if the answer is in front of you, you don't retrieve, so you get comprehension but not the retention gain. [wiki/02 · high]"
+        },
+        {
+          "q": "State Cepeda's rule of thumb for the optimal spacing gap.",
+          "a": "The optimal inter-study gap is roughly **10–20% of the target retention interval** (falling toward ~5% for a one-year horizon) — so longer retention needs longer gaps. [wiki/02 · high · meta-analysis 2006]"
+        },
+        {
+          "q": "Name Miller's four tiers and what each assessment format reaches.",
+          "a": "**Knows** (facts/MCQ) → **Knows how** (vignette MCQ, reasoning) → **Shows how** (OSCE/sim) → **Does** (workplace audit). [wiki/03 · established-theory]"
+        },
+        {
+          "q": "Moore's seven levels — where does attendance CPD sit, and where does a spaced closed-book retrieval reach?",
+          "a": "Attendance = levels **1–2** (participation/satisfaction); spaced closed-book retrieval = level **3 retention**, edging to **4 (competence)**. CTC + audit reaches **5–6**. [wiki/03 · established-theory]"
+        },
+        {
+          "q": "What did Davis et al. (2006, JAMA) establish, and what's the design implication?",
+          "a": "Physicians have **limited ability to self-assess** vs external measures — so don't rely on self-selected need/self-certified competence; supply external signal and build calibration. [wiki/03 · high · systematic-review]"
+        },
+        {
+          "q": "Per Cervero & Gaines, what five design features make CME most effective?",
+          "a": "**Interactive · multiple methods · multiple exposures · longer · focused on outcomes that matter.** [wiki/04 · moderate · systematic-review 2015]"
+        },
+        {
+          "q": "Forsetlund (Cochrane 2021): didactic vs interactive meetings?",
+          "a": "**Interactive workshops** can produce moderately large practice change; **didactic sessions alone are unlikely** to change practice. [wiki/04 · moderate · systematic-review]"
+        },
+        {
+          "q": "What is a commitment-to-change prompt and why is it high-value?",
+          "a": "Asking \"what will you do differently?\" with follow-up — stated commitments **predict practice change**; cheap way to climb from Moore 3 to 5, and it makes an auditable artefact. [wiki/04 · moderate · primary-study]"
+        },
+        {
+          "q": "Why is certainty-based marking a good fit for *expert* clinicians specifically?",
+          "a": "Experts' risk is **confident, out-of-date practice**, not ignorance; CBM surfaces the \"confidently wrong\" zone and improves calibration. [wiki/03 · moderate · primary-study]"
+        },
+        {
+          "q": "What is mastery learning, and how should it gate full CPD credit?",
+          "a": "A **fixed high standard with variable attempts** — keep going (with feedback and parallel items) until criterion. Gate full credit on a **mastery threshold with spaced re-attempts on fresh items**, not a one-shot low pass. [wiki/03 · moderate · systematic-review]"
+        },
+        {
+          "q": "What's the difference between blocking and interleaving, and when does interleaving help?",
+          "a": "Blocking = one topic at a time; interleaving = mixing related topics — it improves **discrimination/transfer** (most when items are confusable), at a cost in immediate fluency. [wiki/02 · moderate]"
+        },
+        {
+          "q": "Across AU/US/India/China, what stays the same and what changes?",
+          "a": "The **learning science is universal**; only the **credit shell** (accounting unit + outcome orientation + accrediting body) changes — build it as a per-market config. [wiki/06 · regulatory-current]"
+        }
+      ]
+    },
+    {
+      "id": "arthrogryposis-upper-limb-surgery",
+      "title": "Arthrogryposis Upper-Limb Surgery",
+      "lessons": [
+        {
+          "n": 1,
+          "title": "Lesson 1",
+          "body": "AMC = non-progressive congenital contractures, ≥2 joints in ≥2 regions; a final common path, not one disease. Split that matters surgically: **amyoplasia** (sporadic, muscle replaced, symmetric) vs **distal arthrogryposis** (genetic/AD, hands+feet, muscle better preserved). Muscle presence is the hinge of every later decision. → KB 01.",
+          "check": "Why does it matter at the operating table whether a child has amyoplasia vs DA?",
+          "full": true
+        },
+        {
+          "n": 2,
+          "title": "Lesson 2",
+          "body": "Useful mobility, not maximum mobility. UL goal priorities: hand-to-mouth, grasp/release, perineal care, bimanual. Bilateral rule: one elbow flexes, one extends. Assess passive vs active ROM and, above all, **muscle presence**. Counsel on function — PROMs stay low, QoL is normal. → KB 02.",
+          "check": "A bilateral patient — what's the trap in making both elbows flex?",
+          "full": true
+        },
+        {
+          "n": 3,
+          "title": "Lesson 3",
+          "body": "Stretching, **serial casting** (best gains after first cast; DA responds, classic AML ~75% recurrence), splints/orthoses, elbow flexion-assist orthosis; botulinum toxin = low-evidence adjunct. Therapy repositions/maintains but can't make muscle. → KB 03.",
+          "check": "When does recurrent wrist deformity after casting change your plan?",
+          "full": true
+        },
+        {
+          "n": 4,
+          "title": "Lesson 4",
+          "body": "Step 1 posterior release ± triceps lengthening for **passive** flexion — **earlier is better (<2 y, ~88° arc)**; release alone beats simultaneous osteotomy for arc. Step 2 active flexion (triceps-to-biceps / bipolar LD ~97.7°, 92% satisfied / Steindler / pec major) **only with passive arc + donor**. Step 3 FFMT (gracilis) if no donor. → KB 04.",
+          "check": "Name the prerequisites before you promise a child active elbow flexion.",
+          "full": true
+        },
+        {
+          "n": 5,
+          "title": "Lesson 5",
+          "body": "Shoulder: external-rotation humeral osteotomy reorients the hand. Wrist: casting → **dorsal/intercarpal carpal wedge osteotomy ± FCU/ECU→ECRB transfer** (± volar release; PRC if severe) for rigid flexion >~40°/ulnar deviation — and know **whom not to operate**. → KB 04–05.",
+          "check": "Why combine a bony osteotomy with a tendon transfer rather than either alone?",
+          "full": true
+        },
+        {
+          "n": 6,
+          "title": "Lesson 6",
+          "body": "Thumb-in-palm = first-web contracture + MCPJ instability + weak extensors + tight FPL. À la carte: first-web release + **skin flap (Abdel-Ghani)** + **MCPJ chondrodesis** (static stabilisation when muscles can't be transferred) ± FPL lengthening. Camptodactyly: therapy first, modest surgical gains. → KB 06.",
+          "check": "Why chondrodesis rather than a tendon transfer for the amyoplasia thumb MCPJ?",
+          "full": true
+        },
+        {
+          "n": 7,
+          "title": "Lesson 7",
+          "body": "Whole field is Therapeutic IV–V; 2026 systematic review = the anchor. Walk the algorithm: therapy → shoulder → elbow → wrist → thumb → fingers, repositioning into usable arcs and powering only where muscle exists. → KB 07.\n**Capstone:** Build a staged UL plan for a child with bilateral amyoplasia (extended elbows, flexed wrists, thumbs-in-palm) and justify each step + its evidence level.",
+          "check": "",
+          "full": true
+        }
+      ],
+      "quiz": []
+    },
+    {
+      "id": "coolmaster",
+      "title": "CoolMaster",
+      "lessons": [
+        {
+          "n": 1,
+          "title": "Lesson 1",
+          "body": "**Goal:** understand what the box does, then stand up the HVAC layer of your HA hub — locally, reversibly, with no credential exposure.\n\n### 1.1 The mental model (2 minutes)\nYour CoolMaster is a **universal HVAC gateway**. VRF/VRV systems (Daikin, Mitsubishi, Fujitsu, etc.) each run a *proprietary* communication loop between the outdoor and indoor units. Historically you needed a different mediation box per brand. CoolMaster speaks all of them and presents every indoor unit through **one interface**. [wiki/01]\n\nTwo facts you'll use constantly:\n- **Lines.** Your unit has **8 HVAC line connectors, L1–L8.** Each line is a bus that can carry one brand and its indoor units. One box, mixed brands across lines. [wiki/01]\n- **Unit IDs.** Every indoor unit is named **`Ln.XYY`** — line, dot, indoor number. Example: `L1.001`. This same ID shows up in HA, BACnet, KNX, and the ASCII protocol. [wiki/02]\n\n### 1.2 The one diagnostic that tells you everything: `ls` (5 minutes)\nBefore touching Home Assistant, prove the gateway is talking to your HVAC. The gateway runs a plain-text (ASCII) command server over TCP. Connect to it and run **`ls`**.\n\n- Find the gateway's **IP** (its display shows it; or check UniFi's client list). \n- From a computer on the same LAN, open a raw TCP/telnet-style socket to the gateway's ASCII port (the HA path uses **port 10102** — see the note below) and type:\n  ```\n  ls\n  ```\n- You should get one line per indoor unit, e.g.:\n  ```\n  L1.100 ON 19C 30C High Fan OK # 0\n  L1.101 OFF 28C 23C High Cool OK - 0\n  ```\n  That's UID · on/off · room temp · setpoint · fan · mode · status. [wiki/02]\n\n**Read the result:**\n- **Units appear** → the gateway↔HVAC link is healthy and you know exactly which brands/units are on which lines. Integration will be a formality. ✅\n- **Nothing appears** → the problem is the HVAC line config/wiring or the gateway's brand driver — *not* Home Assistant. Fix that first (device display / ToolBox), then continue. [wiki/06]\n\n> _Port note:_ **10102** is the verified port the Home Assistant library uses. If a raw socket on 10102 doesn't answer, check the device's ASCII-server port in its display/ToolBox config (this is an open verification item — see [[discovery-log]] Q4). [wiki/02]\n\n### 1.3 Reserve the IP (1 minute)\nIn UniFi, give the CoolMaster a **DHCP reservation** so its IP never changes. A changed lease is the #1 cause of \"HA lost my HVAC.\" [wiki/03]\n\n### 1.4 Add the Home Assistant integration (3 minutes)\nNow the easy part — it's purely local, no cloud, no PIN.\n1. HA → **Settings → Devices & Services → Add Integration**.\n2. Search **\"CoolMasterNet\"** and select it. (Yes — \"Net\", even though your unit is the newer family; that's just the integration's name.) [wiki/03]\n3. Enter the gateway's **IP** (and **port 10102** if asked). [wiki/03]\n4. HA creates a **climate entity per indoor unit** (`Ln.XYY`). You now have per-room temp, setpoint, on/off, fan (low/med/high/auto), and mode (auto/cool/dry/fan/heat) in HA. [wiki/03]\n\n### 1.5 The boundaries you just respected (1 minute)\n- **No cloud.** The integration is **Local Polling** — it never needed your CoolRemote account. [wiki/05]\n- **No PIN.** Your CoolRemote registration PIN is a *credential* for the vendor cloud — Home Assistant doesn't use it, and you never typed it anywhere here. [wiki/05]\n- **No firmware update.** v0.9.7A integrates as-is over the stable ASCII protocol. Update later only if you hit a specific need — and back up first. [wiki/06]\n- **Reversible.** If anything's off, delete the integration; nothing on the gateway changed. [wiki/03]\n\n### 1.6 Check your understanding\n1. What does `Ln.XYY` mean, and what does `ls` show you? \n2. Does the HA integration need the internet or your CoolRemote PIN? \n3. If `ls` returns nothing, is that an HA problem or an HVAC-side problem?\n\n(Answers: wiki/02 · wiki/03+05 · wiki/06.) When you can answer these, you've finished Lesson 1 — your HVAC is in HA, locally. ✅\n\n---",
+          "check": "",
+          "full": true
+        },
+        {
+          "n": 2,
+          "title": "Lesson 2",
+          "body": "The ASCII command language: command rules (`<CR><LF>`, case-sensitive), the full `ls`/`ls+`/`props` family, the per-unit setters, RS232 vs the TCP `aserver`, and Virtual Addresses for BACnet/Modbus. Hands-on: drive a unit by hand over the socket, then watch it change in HA. → wiki/02.",
+          "check": "",
+          "full": true
+        },
+        {
+          "n": 3,
+          "title": "Lesson 3",
+          "body": "CoolMaster vs CoolMasterPro vs the discontinued CoolMasterNet; EDGE/LT/Home siblings; the 32-unit cap; which brand is on each of your L1–L8 lines (from your `ls` output); brand-adapter gotchas (Fujitsu UTY-VGGX, Hitachi PSC-6RAD). → wiki/01.",
+          "check": "",
+          "full": true
+        },
+        {
+          "n": 4,
+          "title": "Lesson 4",
+          "body": "When the native HA integration isn't the answer: sharing units with a BMS (BACnet), a KNX layer, Modbus, and the Savant IP driver. Why these are *reserve* paths for the estate, and the D1/D2 lever — CoolMaster is hub-agnostic, so HVAC isn't locked to Savant. → wiki/04.",
+          "check": "",
+          "full": true
+        },
+        {
+          "n": 5,
+          "title": "Lesson 5",
+          "body": "CoolRemote cloud vs local control; the local-first verdict (D5); whether to keep or remove the unit's cloud registration (your call, your PIN); never exposing the gateway to the internet; using HA's own remote path instead of a per-vendor cloud. → wiki/05.",
+          "check": "",
+          "full": true
+        },
+        {
+          "n": 6,
+          "title": "Lesson 6",
+          "body": "The firmware question (v0.9.7A → 1.x: when and how, via ToolBox, with a backup); no-Matter-yet and what that means; known limits (poll-not-push, residential telemetry gap, surface gaps); the troubleshooting first-moves; how the quarterly refresh keeps this set current. → wiki/06.\n\n---",
+          "check": "",
+          "full": true
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What does a CoolMaster actually do, in one line?",
+          "a": "It's a **universal HVAC gateway** — speaks each VRF/VRV brand's proprietary indoor-unit loop natively and presents all units through one unified interface to an automation/BMS system. [wiki/01 · 2026-06]"
+        },
+        {
+          "q": "CoolMaster vs CoolMasterPro vs CoolMasterNet?",
+          "a": "**CoolMaster** = residential, up to **32** units. **CoolMasterPro** = commercial, up to **256** units + local service-data access. **CoolMasterNet** = **discontinued** (replaced by the Product Line) but **still firmware-supported** and the **name the HA integration uses**. [wiki/01 · 2026-06]"
+        },
+        {
+          "q": "What's the unit-addressing format, and what does `ls` do?",
+          "a": "**`Ln.XYY`** (Line.Indoor), e.g. `L1.001`; `Ln` = HVAC line L1–L8. **`ls`** lists the visible indoor units the gateway has detected (UID, on/off, temps, fan, mode, status). [wiki/02 · 2026-06]"
+        },
+        {
+          "q": "Which HA integration, what IoT class, and does it need the cloud?",
+          "a": "The native **`coolmaster`** (\"CoolMasterNet\") integration; **Local Polling**; **no cloud / no CoolRemote account** needed. [wiki/03 · 2026-06]"
+        },
+        {
+          "q": "What TCP port does the HA path use, and what library backs it?",
+          "a": "Default **port 10102**, via **`pycoolmasternet-async`**. [wiki/03 · 2026-06]"
+        },
+        {
+          "q": "What does each HA climate entity expose?",
+          "a": "Current temp, target temp (setpoint), on/off, **fan** (low/med/high/auto), **mode** (auto/cool/dry/fan/heat). [wiki/03 · 2026-06]"
+        },
+        {
+          "q": "Which building/automation protocols does CoolMaster speak?",
+          "a": "**Modbus RTU/IP, BACnet IP/MSTP, KNX, ASCII, REST, HDL** — and native drivers for Savant/Control4/Crestron/RTI/Vantage/Dynalite etc. **No Matter.** [wiki/04, wiki/06 · 2026-06]"
+        },
+        {
+          "q": "Does CoolMaster support Matter? Architecture consequence?",
+          "a": "**No** (as of 2026-06, verified by absence). So HVAC joins HA as its **own native integration**, not via a Matter bridge — independent of the Dynalite-Matter route (D3). [wiki/06 · 2026-06]"
+        },
+        {
+          "q": "Why does CoolMaster *strengthen* the HA-as-hub case (D1) and the Savant-retire lean (D2)?",
+          "a": "It speaks **both** Savant's IP driver **and** the native HA integration over the LAN — HVAC is **hub-agnostic, not Savant-locked**, so moving the brain to HA strands nothing. [wiki/04 · 2026-06]"
+        },
+        {
+          "q": "Scott's unit is fw **v0.9.7A** and cloud-registered. Must he update firmware or give HA his PIN to integrate?",
+          "a": "**Neither.** The HA integration uses the stable ASCII protocol — v0.9.7A integrates as-is (update only for a needed fix, with a backup). The **PIN is a CoolRemote credential**, irrelevant to the local integration. [wiki/05, wiki/06 · 2026-06]"
+        },
+        {
+          "q": "Fastest safe path to get the unit into HA (the four moves)?",
+          "a": "(1) Reserve the device IP on UniFi; (2) socket in, run **`ls`** to confirm units; (3) add the **CoolMasterNet** integration with IP + port 10102; (4) confirm a climate entity per room. Local, reversible, no credential exposure. [wiki/03 · 2026-06]"
+        },
+        {
+          "q": "One honest limitation of the HA integration?",
+          "a": "**Local Polling, not push** — wall-controller changes show after the next poll; and some HVAC extras (swing/vane, advanced diagnostics) may not surface. [wiki/03, wiki/06 · 2026-06]"
+        }
+      ]
+    },
+    {
+      "id": "croup-croup-like-infections-paediatric",
+      "title": "Croup & Croup-like Infections (Paediatric)",
+      "lessons": [
+        {
+          "n": 1,
+          "title": "Lesson 1",
+          "body": "**Read:** `kb/01`. **Goal:** triage before you diagnose.\n- Minimise distress (it worsens obstruction); focused exam on the carer's lap.\n- Toxic vs non-toxic split; the two tells — **cough → croup, drool → epiglottitis**.\n- Stridor *loudness* ≠ severity; falling air entry and a tiring child are the danger.\n- Investigations: usually none — croup is clinical.\n**Self-check:** Q1–Q2 in quiz.",
+          "check": "",
+          "full": true
+        },
+        {
+          "n": 2,
+          "title": "Lesson 2",
+          "body": "**Read:** `kb/02`. **Goal:** own the core.\n- Subglottic oedema + cricoid ring = big resistance rise; parainfluenza commonest; night-worse, peaks night 2–3.\n- Severity table (mild→life-threatening); Westley score.\n- **Steroid for nearly all (dexamethasone default, AU 0.15 mg/kg; 0.6 for severe); adrenaline fast-but-transient, observe 3 h.**\n- What has no role: antibiotics, humidified air, cough suppressants, routine heliox.\n**Self-check:** Q3–Q6.",
+          "check": "",
+          "full": true
+        },
+        {
+          "n": 3,
+          "title": "Lesson 3",
+          "body": "**Read:** `kb/03`. **Goal:** know when the label changes the plan (mostly it doesn't, acutely).\n- Spasmodic = sudden nocturnal, no prodrome; **treat identically** to viral croup.\n- Recurrent/atypical (or <6 mo / >6 yr) = referral trigger → exclude subglottic stenosis/haemangioma, reflux.\n**Self-check:** Q7.",
+          "check": "",
+          "full": true
+        },
+        {
+          "n": 4,
+          "title": "Lesson 4",
+          "body": "**Read:** `kb/04`, `kb/05`. **Goal:** recognise the toxic airway emergency.\n- Epiglottitis: Hib-era rarity (4.9→0.02/100k); toxic, drool, no cough, tripod; **airway team, hands off the throat**.\n- Bacterial tracheitis: \"croup that won't quit\", toxic, **no response to adrenaline**, *S. aureus*, often intubated.\n**Self-check:** Q8–Q10.",
+          "check": "",
+          "full": true
+        },
+        {
+          "n": 5,
+          "title": "Lesson 5",
+          "body": "**Read:** `kb/06`, `kb/07`. **Goal:** age-split the abscesses; get the ARF exception.\n- RPA young (<6, torticollis) vs PTA adolescent (trismus, uvular deviation); CT decides drainage.\n- GAS pharyngitis: score → swab → penicillin; modest benefit — **except the AU ARF exception** in high-risk children.\n**Self-check:** Q11–Q13.",
+          "check": "",
+          "full": true
+        },
+        {
+          "n": 6,
+          "title": "Lesson 6",
+          "body": "**Read:** `kb/08`, `kb/09`. **Goal:** the non-infective mimic + the master table.\n- FB: <3 yr, abrupt while eating/playing, afebrile, unilateral signs; normal CXR doesn't exclude; rigid bronchoscopy.\n- Run the discriminator table cold; recite the two tells + the non-response rule; name the AU divergences.\n**Self-check:** Q14–Q16 + the synthesis challenge.\n\n---\n\n**On completion:** offer a **spaced review** — re-test the quiz at day 1, day 3, week 1, month 1 (Leitner), and revisit Lesson 4 (the emergencies) preferentially. Then point back to the expert: *\"Ask the croup expert: …\"* for applied questions.",
+          "check": "",
+          "full": true
+        }
+      ],
+      "quiz": []
+    },
     {
       "id": "dynalite-system-builder",
       "title": "Dynalite System Builder",
@@ -190,6 +546,104 @@
       ]
     },
     {
+      "id": "matter",
+      "title": "Matter",
+      "lessons": [
+        {
+          "n": 1,
+          "title": "What Matter actually is",
+          "body": "**Goal:** by the end you can say what Matter *is* (and isn't), name the data-model layers, and explain why \"Matter-compatible\" doesn't guarantee a feature works.\n\nMatter is an **application layer** for the smart home — a shared *language* devices speak so a certified gadget works across Apple, Google, Amazon and Samsung. The single most important thing to get straight: **Matter is not a new radio or network.** It runs **over IP**, on the Wi-Fi, Ethernet, or **Thread** you already have. It standardises the *device language* on top, nothing below.\n\nThat language is layered. A **node** is an addressable device. Inside it are **endpoints** (functional units — a power strip is one node with many outlet endpoints). Each endpoint has a **device type** (e.g. *On/Off Light*, *Thermostat*) which mandates certain **clusters** — bundles of capability (the *On/Off* cluster, the *Level Control* cluster for dimming, the *Color Control* cluster). Inside clusters live **attributes** (state, like brightness 0–254), **commands** (actions, like Toggle), and **events** (notifications). Finally, a **fabric** is a security domain — the set of devices that trust each other; commissioning a device into an ecosystem adds it to that ecosystem's fabric.\n\nHere's the payoff and the trap in one: **capability lives at the cluster level.** A light advertised as \"Matter-compatible\" that only implements the On/Off cluster **won't dim over Matter** even though its own app dims it fine. So \"Matter-compatible\" is never a yes/no — it's \"*which clusters?*\" This is exactly why Matter's marketing can over-deliver on paper and under-deliver in your hallway, a theme we'll hit hard in L4 and L6.",
+          "check": "*Your new \"Matter\" blind connects to Home Assistant but you can only open/close it fully — no partial positioning. In Matter's data model, what's the likely cause?*",
+          "full": true
+        },
+        {
+          "n": 2,
+          "title": "Getting devices on: commissioning & multi-admin",
+          "body": "QR/BLE/**NFC (1.6)** flows; the onboarding payload; **multi-admin** vs **Joint Fabric (1.6)**.",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 3,
+          "title": "How it travels: Thread, Wi-Fi & bridges",
+          "body": "The three transports; BLE/NFC = commissioning only; Thread Border Routers; **bridges** (Hue, **Dynalite**).",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 4,
+          "title": "Who runs it: ecosystems & the reality gap",
+          "body": "Apple/Google/Amazon/SmartThings/**HA** as controllers; \"Works with Matter\" ≠ \"all features work\"; the version-lag problem.",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 5,
+          "title": "Certification & the version train",
+          "body": "The cert program + Product Security 1.1; what each release (1.0→1.6) added; spec vs SDK vs controller — the three clocks.",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 6,
+          "title": "Limits & staying current",
+          "body": "The honest \"Matter still can't…\" register; how the monthly refresh tracks the spec/SDK/platform churn and keeps *you* current.",
+          "check": "",
+          "full": false
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What *layer* is Matter, and what does it run over?",
+          "a": "An **application layer over IP** — it standardises the device language; it runs over **Wi-Fi, Ethernet, and Thread**. It doesn't replace your network. [wiki/01 · 1.6]"
+        },
+        {
+          "q": "Put these in order, smallest to largest: cluster, node, attribute, endpoint, device type.",
+          "a": "**attribute → cluster → device type → endpoint → node.** Attributes/commands live in clusters; a device type mandates clusters; endpoints group device types; a node is the addressable device. [wiki/01 · 1.6]"
+        },
+        {
+          "q": "Why can a \"Matter-compatible\" dimmable light fail to dim over Matter?",
+          "a": "Capability lives at the **cluster** level — if it only exposes On/Off and not **Level Control**, it won't dim over Matter even though its own app does. [wiki/01, wiki/06 · 1.6]"
+        },
+        {
+          "q": "What are the two headline features of Matter 1.6, and the date/event it launched?",
+          "a": "**NFC commissioning** (full, incl. *before the device has power*) and **Joint Fabric** (co-administered single fabric). Released **2026-06-17** at CSA's **\"Unify\"** conference, Austin. [wiki/02, wiki/05 · 1.6]"
+        },
+        {
+          "q": "Difference between **multi-admin** and **Joint Fabric**?",
+          "a": "**Multi-admin** = one device joins several ecosystems, each keeping its **own separate fabric** (today's reality, ~5 max). **Joint Fabric (1.6)** = multiple controllers **co-administer one fabric** — the structural fix, but spec-now/products-later. [wiki/02 · 1.6]"
+        },
+        {
+          "q": "Which transport is used only for *commissioning*, and which new one joined it in 1.6?",
+          "a": "**Bluetooth LE** is commissioning-only (not operational); **NFC** joined as a commissioning transport in 1.6. Operational traffic runs over Thread/Wi-Fi/Ethernet. [wiki/02, wiki/03 · 1.6]"
+        },
+        {
+          "q": "What is a Thread Border Router, why do you need one, and name two examples relevant to Scott.",
+          "a": "It **bridges the low-power Thread mesh to your IP network** — without one, Thread devices can't reach the controller. Examples: **Apple HomePod**, **Google Nest Hub**, **Amazon Echo (4th gen)**, **HA Connect/SkyConnect** radio. [wiki/03 · 1.6]"
+        },
+        {
+          "q": "\"Works with Matter\" ≠ ? — state the gap in one line.",
+          "a": "≠ \"all features work.\" **No platform implements the full spec**; spec → SDK → controller are three clocks that must align; advanced features often fall back to the vendor app. [wiki/04, wiki/06 · 2026]"
+        },
+        {
+          "q": "Name three device categories Matter still doesn't cover (June 2026), and one that *was* a gap but is now covered.",
+          "a": "Still missing: **whole-home audio, irrigation, pool/spa**. Now covered (as of 1.5): **cameras** (and closures). [wiki/06, wiki/05 · 1.6]"
+        },
+        {
+          "q": "Which release added the energy devices (solar/battery/heat-pump/EVSE), and which added cameras?",
+          "a": "**1.4** (2024-11-07) added energy devices; **1.5** (2025-11-20) added cameras (WebRTC). [wiki/05 · 1.6]"
+        },
+        {
+          "q": "Scott-specific: what new certified bridge connects his lighting layer to Matter, and what must he verify before relying on it?",
+          "a": "The **Philips Dynalite Matter Bridge** (CSA-certified) exposes Dynalite/DyNet as Matter endpoints. Verify it **fits his Dynalite generation** and exposes what he needs (scenes/channels) before betting on it. [wiki/03 · 2026]"
+        },
+        {
+          "q": "(Perishable) Which big-four platform is reported *closest* to full Matter coverage, and which *lags*?",
+          "a": "**SmartThings** closest; **Google Home** lagging (may miss 1.2-era device types). *Perishable — reverify each refresh.* [wiki/04 · press · 2026]"
+        }
+      ]
+    },
+    {
       "id": "prs-journal",
       "title": "PRS Journal",
       "lessons": [],
@@ -241,6 +695,104 @@
         {
           "q": "In the extended transconjunctival lower-lid blepharoplasty series, what unexpected benefit was reported beyond tear-trough correction?",
           "a": "**Predictable improvement of the smile** (from releasing orbicularis origins), with no scleral show, fat necrosis 3.5%, revision 1.0%. `[157(6)] →` https://doi.org/10.1097/PRS.0000000000012545"
+        }
+      ]
+    },
+    {
+      "id": "philips-hue",
+      "title": "Philips Hue",
+      "lessons": [
+        {
+          "n": 1,
+          "title": "What Hue is & the two bridges",
+          "body": "**Goal:** by the end you can say what Hue actually is, tell the two bridges apart, and decide whether you need the Pro.\n\nPhilips Hue (made by **Signify**) is a **smart-lighting ecosystem**: bulbs, fixtures, lightstrips and accessories that talk to each other over a **Zigbee** mesh — a low-power 2.4 GHz radio, *not* Wi-Fi and *not* Thread. The brain of that mesh is the **Hue Bridge**, a small hub that plugs into your router; it's what your phone app, your voice assistant, and Home Assistant actually talk to. Everything else hangs off the bridge.\n\nThere are two current bridges. The **Bridge v2** (the square one, around since 2015) handles up to **50 lights and 12 accessories** — plenty for an accent setup. The newer **Bridge Pro** (launched ~Sept 2025) is a capacity-and-speed upgrade: up to **150+ lights, 50 accessories, 500 scenes**, faster hardware, USB-C and Wi-Fi, plus a Pro-only feature called **SpatialAware**. Crucially, the Pro is **the same Zigbee, the same app, the same API** — it's bigger, not different. (The older round **V1 bridge is end-of-life** — don't build on it.) One nuance to bank: even on the Pro, the legacy **\"rules\" limit stayed at 250**; the Hue *app* now uses a newer **\"scripts\"** system (up to 200), so heavy users of third-party apps like iConnectHue can still hit the old rules ceiling.\n\nAnd one thing that surprises people: since **2024 a Hue account is mandatory** to control your lights through the app. Local control still works, and Home Assistant keeps working after the initial sign-in — but Hue is no longer fully account-free.",
+          "check": "*You have about 30 Hue lights and a handful of switches, used as accent lighting. Do you need a Bridge Pro — and would buying one change the protocol your lights use?*",
+          "full": true
+        },
+        {
+          "n": 2,
+          "title": "How the bridge is controlled",
+          "body": "CLIP API v2 (REST + event-stream push); the Entertainment streaming API (DTLS/UDP); the \"don't use REST for fast updates\" rule; V2-push vs V1-poll.",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 3,
+          "title": "Matter & interoperability",
+          "body": "What Matter exposure is (and isn't — Zigbee stays internal); the multi-ecosystem picture; the 2026 Matter bugs/fixes; Zigbee/Thread RF coexistence.",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 4,
+          "title": "Hue under Home Assistant",
+          "body": "Native `hue` integration vs Matter (and why native wins for HA); scenes/grouped lights; diyHue/Homebridge; HA-led automation patterns.",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 5,
+          "title": "Scenes, entertainment & features",
+          "body": "Dynamic/gradient scenes; entertainment areas + Sync; SpatialAware; the scripts model.",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 6,
+          "title": "Limits, migration & staying current",
+          "body": "Cloud-account direction; v2-vs-Pro limits + migration gotchas; EOL/deprecations; the **Hue↔Dynalite coexistence** under HA; how this set keeps *you* current.",
+          "check": "",
+          "full": false
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What radio does Hue use between the bridge and the bulbs — and is Matter that radio?",
+          "a": "**Zigbee** (2.4 GHz / 802.15.4). Matter is *not* the radio — it's the *northbound* exposure of the bridge to other ecosystems. [wiki/01, wiki/03 · 2026-06]"
+        },
+        {
+          "q": "Three ways the Hue Bridge is controllable on the LAN?",
+          "a": "**CLIP REST API v2**, the **local event stream (push)**, and the **Entertainment streaming API** (DTLS/UDP). [wiki/02 · 2026-06]"
+        },
+        {
+          "q": "Why is the HA `hue` integration \"Local Push\" on a V2 bridge but polled on V1?",
+          "a": "**V2 bridges (square)** support the **event stream** (push); **V1 bridges (round)** have no push, so they're **polled** — and V1 is EOL. [wiki/02, wiki/04 · 2026.5]"
+        },
+        {
+          "q": "Hue is already in Apple Home via Matter. Best way to also get it into Home Assistant?",
+          "a": "The **native `hue` integration** (local CLIP v2, richer entities), **not** via Matter — Matter was the flaky path in 2026. Keep Matter for Apple Home in parallel. [wiki/03, wiki/04 · 2026-06]"
+        },
+        {
+          "q": "Bridge Pro vs v2 — lights and accessories limits?",
+          "a": "**150+ lights / 50 accessories** (Pro) vs **50 / 12** (v2). Scenes up to 500, scripts up to 200 on Pro. [wiki/01, wiki/06 · 2025-12]"
+        },
+        {
+          "q": "Did the Bridge Pro raise the **rules** limit? Why does that matter?",
+          "a": "**No — rules stayed at 250.** Heavy third-party-app users (iConnectHue/All4Hue use the legacy rules engine) can still hit it on a Pro; Hue-app users get the quadrupled **scripts** headroom instead. [wiki/01, wiki/06 · 2025-12]"
+        },
+        {
+          "q": "Name two 2026 Matter problems on Hue and one fix.",
+          "a": "e.g. Bridge-Pro **losing its Matter connection** (fixed in fw 2071294010/020, 2026-04-09); HomeKit **\"No Response\"** when an Apple Home Hub was online; low-brightness lights jumping to full (fixed). [wiki/03 · 2026]"
+        },
+        {
+          "q": "What must you NOT use the REST API for, and what do you use instead?",
+          "a": "**Continuous fast light updates** — it's slow, floods the event stream, can't be stopped by other apps. Use the dedicated **Entertainment streaming API** (DTLS/UDP). [wiki/02 · 2026-06]"
+        },
+        {
+          "q": "Where do you create/edit Hue scenes when using Home Assistant?",
+          "a": "In the **Hue app** — HA imports them as scene entities and triggers via `hue.activate_scene`; HA can't create/edit Hue scenes. [wiki/04 · 2026.5]"
+        },
+        {
+          "q": "Does Hue still run fully account-free?",
+          "a": "**No.** Since **2024** a **Hue account is mandatory** for app control (and for Matter setup). Local control + third-party local controllers still work after sign-in. [wiki/06 · 2024]"
+        },
+        {
+          "q": "How should Hue and Dynalite coexist in Scott's home?",
+          "a": "**Complementary, unified at the HA layer** — Dynalite is the wired backbone, Hue the accent layer; HA holds both integrations and coordinates them. Don't make Hue a Dynalite replacement. [wiki/06 · 2026-06]"
+        },
+        {
+          "q": "What's \"scripts vs rules\" on the Hue bridge?",
+          "a": "**Scripts** = the modern automation platform the Hue app uses (≤200 on Pro); **rules** = the legacy engine (≤250) still used by third-party apps. New accessories are scripts-only. [wiki/01 · 2025-12]"
         }
       ]
     },
@@ -309,6 +861,206 @@
         {
           "q": "What happens to this KB if Scott commits to the migration?",
           "a": "It's **designed to go dormant → archive** once Savant is decommissioned (its job done). [wiki/05]"
+        }
+      ]
+    },
+    {
+      "id": "thread",
+      "title": "Thread",
+      "lessons": [
+        {
+          "n": 1,
+          "title": "What Thread is & the stack",
+          "body": "**Goal:** by the end you can say what Thread is in one sentence, place it correctly against Matter, and name the mesh roles.\n\nThread is a **low-power, IPv6, wireless mesh network** for smart-home devices — it runs over **IEEE 802.15.4** radio (the same 2.4 GHz radio family as Zigbee) and uses **6LoWPAN** to squeeze IPv6 into those tiny radio frames, so every Thread device has a real IP address. The single most important idea: **Thread is a *network* layer — it moves packets; it does not decide what a \"light\" or a \"lock\" *means*.** That job belongs to **Matter**, which rides *on top* of Thread. So \"Thread vs Matter\" is a category error — they stack (Matter-over-Thread).\n\nInside the mesh there's **no single point of failure**: routing is distributed and self-healing. Devices take **dynamic roles** — one elected **Leader**, ordinary **Routers**, **REEDs** (router-eligible end devices that get promoted when more routing is needed), and **End Devices / SEDs** (sleepy battery devices that attach to a parent and never route). Mains-powered devices tend to thicken the mesh as routers; battery devices stay sleepy. A separate box, the **border router**, bridges this mesh to your home network and the internet (that's Lesson 2).",
+          "check": "*Someone says \"I can't decide between Thread and Matter for my new sensor.\" What's wrong with the question, and how would you reframe it?*",
+          "full": true
+        },
+        {
+          "n": 2,
+          "title": "Border routers & OpenThread",
+          "body": "What a BR does; OpenThread (the reference stack) & OTBR; HA's OTBR add-on; running multiple BRs.",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 3,
+          "title": "Commissioning & credentials",
+          "body": "The operational dataset; BLE→join→commission; Thread 1.4 credential sharing; the pending dataset.",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 4,
+          "title": "Thread vs Matter vs Zigbee",
+          "body": "Layer boundaries; Matter rides Thread; Zigbee shares the radio but not the stack; Wi-Fi coexistence; where Dynalite/Hue sit.",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 5,
+          "title": "Versioning & certification",
+          "body": "1.1→1.4; what 1.4 changed; the Jan 2026 BR certification cutoff; OpenThread reference releases as the obsolescence signal.",
+          "check": "",
+          "full": false
+        },
+        {
+          "n": 6,
+          "title": "Troubleshooting & honest limits",
+          "body": "Range, channels, BR sprawl, partitions, diagnostics; what Thread is and isn't good for; how this set keeps *you* current.",
+          "check": "",
+          "full": false
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What layer is Thread, and what rides on top of it?",
+          "a": "Thread is the **network layer** (IPv6 mesh over 802.15.4). **Matter** (the application layer) rides on top — Matter-over-Thread. \"Thread vs Matter\" is a category error; they stack. [wiki/04 · 2026.6]"
+        },
+        {
+          "q": "Name the radio Thread uses and one protocol that shares it.",
+          "a": "**IEEE 802.15.4** at 2.4 GHz (~250 kbit/s, 16 channels). **Zigbee** shares the same radio family. [wiki/01, wiki/04 · 2026.6]"
+        },
+        {
+          "q": "How is Thread different from Zigbee despite the shared radio?",
+          "a": "**Thread is natively IPv6** (every device IP-routable). **Zigbee** has its own non-IP app stack and needs a **translating gateway/bridge** (e.g. a Hue Bridge). [wiki/04 · 2026.6]"
+        },
+        {
+          "q": "What does a Thread **border router** do, and can you run more than one?",
+          "a": "Bridges the mesh to your LAN/internet (incl. NAT64/DNS64, DHCPv6-PD). **Yes — run multiple BRs on one shared network** for redundancy. [wiki/02 · 2026.6]"
+        },
+        {
+          "q": "Name the four core device roles in a Thread mesh.",
+          "a": "**Leader** (one, elected) · **Router** · **REED** (router-eligible end device, promotable) · **End Device / SED** (sleepy, attaches to a parent, never routes). [wiki/01 · 2026.6]"
+        },
+        {
+          "q": "What is the **operational dataset**, and which field is the secret?",
+          "a": "The TLV bundle defining a Thread network (PAN ID, XPAN, Channel, Network Name, etc.). The **Network Key** is the secret credential — possessing it = ability to join. [wiki/03 · 2026.6]"
+        },
+        {
+          "q": "When was Thread **1.4** released and what's its headline feature?",
+          "a": "**September 2024**; headline = **credential sharing** — a new BR joins the *existing* mesh instead of creating a competing one. [wiki/05, wiki/03 · 2024-09]"
+        },
+        {
+          "q": "As of **1 Jan 2026**, what spec must a NEW border router be certified to?",
+          "a": "**Thread 1.4** — 1.3 BR certification applications closed 31 Dec 2025; 1.4 is the only certifiable BR spec now. (Existing 1.3 hardware keeps working.) [wiki/05 · 2026-01]"
+        },
+        {
+          "q": "Is Thread 1.4 credential sharing usable in **Home Assistant** today?",
+          "a": "**Not yet via the standard.** HA's OTBR add-on (v2.16.0) runs the **1.4 core in beta**, but **credential sharing is not yet exposed** in HA. [wiki/02, wiki/03 · 2026-01]"
+        },
+        {
+          "q": "Your Thread mesh is flaky — what do you check first?",
+          "a": "**RF coexistence / channel plan.** Thread/Zigbee use narrow 2 MHz channels that overlap Wi-Fi's wide channels; move Thread into the gaps. [wiki/06, wiki/04 · 2026.6]"
+        },
+        {
+          "q": "What's the safe way to change a Thread network's credentials/channel without dropping it?",
+          "a": "The **Pending Operational Dataset** with a delay timer — all devices switch together at expiry. [wiki/03 · 2026.6]"
+        },
+        {
+          "q": "What's the cleanest **obsolescence signal** for which spec level a stack is qualified at?",
+          "a": "**OpenThread reference releases** (`ot-reference-release`) tagged against a **Thread Test Harness** version. [wiki/05 · 2026.6]"
+        }
+      ]
+    },
+    {
+      "id": "using-the-orchestrator",
+      "title": "Using the Orchestrator",
+      "lessons": [
+        {
+          "n": 1,
+          "title": "Lesson 1",
+          "body": "`ORC:` = **Orc**hestrator (sits with your `PMT:` / `SQ:` prefixes). You type `ORC: <rough ask>` and it hands back a **scoped, routed, ready-to-run job**.\n\nTwo things define it:\n\n1. **It's a pre-flight router that STOPS.** It refines your ask, attaches the right folders/zone, checks no other chat is already doing it, recommends *where* it should run (a fresh chat, a sub-agent, or a panel), then produces the artifact and **stops for your go.** It never launches a fresh chat or executes on its own.\n2. **It's recommend-only (procedural, not epistemic).** It routes and scopes; it never overrides the actual worker's judgement. Its route is a recommendation you (or the worker) can overrule.\n\nMental model: ORC: is a **switchboard**, not a boss. It points a rough ask at the right room with the right scope — it doesn't do the work itself.\n\n---",
+          "check": "",
+          "full": true
+        },
+        {
+          "n": 2,
+          "title": "Lesson 2",
+          "body": "**Use `ORC:`** when you're *starting a new, rough, possibly-big or possibly-duplicative chunk of work* and you'd want it scoped and routed before diving in.\n\n**Skip it** for:\n- a quick factual question,\n- continuing work already underway in a chat,\n- plain conversation,\n- a task that's already well-specified.\n\n**The test:** *\"Am I launching a new piece of work I'd want scoped before diving in?\"* — Yes → `ORC:`. No → just ask.\n\nA wrong call is cheap: if you ORC: something trivial, it just says \"this was overkill — just do it here.\" So when in doubt, it's safe to try.\n\n---",
+          "check": "",
+          "full": true
+        },
+        {
+          "n": 3,
+          "title": "Lesson 3",
+          "body": "Your commands fall into three families:\n\n- **Pre-flight / input-shaping** — `ORC:`, `PMT:`, `SQ:`. They turn a rough input into a well-formed one, then **STOP** (you act).\n- **Worker skills** — `create-academic-set` (CAS), library-retrieval, book-to-expert, etc. They *do* the job.\n- **Transition / persistence** — `HO`, `ship`, `checkpoint`, `park:`. They move or save state.\n\nEach pre-flight command shapes a different thing: `SQ:` sharpens the **question**, `PMT:` drafts the **prompt**, `ORC:` refines **+ scopes + routes + duplicate-checks** and emits the **opener**. ORC: is the broadest.\n\n**The one rule: one front door per job.** Pick a single entry command for a given move — don't chain the pre-flight ones on the same raw input. ORC: is the most managerial: it can hand off *to* a PMT or CAS step in the next chat.\n\n---",
+          "check": "",
+          "full": true
+        },
+        {
+          "n": 4,
+          "title": "Lesson 4",
+          "body": "- **`ORC:` + `PMT:`** — *don't run both on the same raw ask* (both ask clarifying questions — redundant). Use them sequentially across chats: `ORC:` picks the room and gives you the opener → in the new chat, `PMT:` writes the detailed brief. **ORC picks the room; PMT furnishes it.**\n- **`ORC:` + `PMT-CAS` + `CAS`** — yes, this works, as a clean 3-stage chain. `ORC:` recognises an academic-set job and **routes** it (fresh chat, general zone, Second Brain folders, research defaults) → `PMT-CAS` drafts the exact CAS prompt → `CAS` executes. ORC sets CAS up; it doesn't replace it.\n- **`ORC:` + `HO`** — *don't combine.* `HO` continues the **same** thread and already carries the context the next chat needs; `ORC:` shapes a **new** ask. They're cousins (both produce a \"start the next chat with this\" artifact), which is exactly why you pick one per transition. The only time both appear: mid-thread you spin off a genuinely *separate* sub-job → `ORC:` that, and `HO` the main thread if you're pausing it.\n\n---",
+          "check": "",
+          "full": true
+        },
+        {
+          "n": 5,
+          "title": "Lesson 5",
+          "body": "There's no background \"ORC engine\" — it's a skill that loads when you invoke it. Most of its good behaviours (duplicate-check, folder least-privilege, sharpening, escalate-when-unsure) **already fire automatically every chat** as standing conventions. ORC: bundles them deliberately, up front, and adds the portable **opener** for a fresh chat.\n\nAuto-running it on every message would gate everything behind a refine-and-confirm step (friction, and it trains reflexive OK-clicking), and it can't read your intent reliably. The planned middle ground is **auto-*suggest*** — Claude offers \"want me to ORC: this first?\" on a big, sprawling, underspecified ask — never auto-run. You stay in control of the front door.\n\n---",
+          "check": "",
+          "full": true
+        },
+        {
+          "n": 6,
+          "title": "Lesson 6",
+          "body": "Lesson 5 ended on the **opener** — the portable one-liner that starts a fresh chat. This lesson makes the everyday mechanic concrete, because it applies to *any* good prompt, not just an `ORC:` job.\n\nWhenever a prompt earns its keep, Claude offers to **save** it to `prompts/` (with an `INDEX.md` row). But a saved prompt is dead weight if you don't know where to run it or have to re-paste the whole thing. So a save-offer now always comes with **two more things**:\n\n1. **A venue recommendation (RR-led): here, or a fresh chat?** The default is a **fresh chat** when the job is long, tool-heavy, or in a different zone — that keeps your drafting/router seat clean and quarantines the run's context. **Here** is the default only when you're continuing work already in flight. Claude states its pick before asking.\n2. **The paste-ready opener** — one fenced code block, one-click copy — pointing the new chat at the saved file: `Read Projects/Claude/prompts/<slug>.md and run the prompt in it.` Plus a reminder of which **folders/zone** that fresh chat will need to mount (from the prompt's `Folders:` line), so the restart doesn't dead-end on access.\n\n**The trap this closes:** confusing the opener with `WWW`. `WWW` *resumes a paused thread* from memory — it can't start a saved prompt, because the prompt lives in `prompts/`, not memory. The opener is the right tool for a **new run from a saved file**; `WWW` is for **picking up where a thread left off**. Different jobs, different triggers.\n\nMental model: **save = shelve the recipe; opener = the address of the kitchen to cook it in.** A good save hands you both.\n\n---\n\n*Next: do `quiz.md`. Pass mark = 11/13, with the pairing questions (9–12) all correct.*",
+          "check": "",
+          "full": true
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Fresh chat: \"What's the maximum oral rosuvastatin dose per the TGA PI?\" — you just want the number. Which front door?",
+          "a": "Just ask (no command). A quick factual lookup isn't a new job to route — the test (\"am I launching work I'd want scoped?\") is No."
+        },
+        {
+          "q": "\"I want to do something with all my old operation notes — not sure what yet, could be big.\" You want it scoped before committing. Which front door?",
+          "a": "`ORC:`. Rough, new, potentially big, scope-before-committing — textbook Orchestrator."
+        },
+        {
+          "q": "You're 40 messages into building a spreadsheet and want to keep going on that same spreadsheet. Which front door?",
+          "a": "Just continue (no command). ORC: is pre-flight — it shapes the start of a new job, not work already in flight."
+        },
+        {
+          "q": "You `ORC:` a one-line task and it replies \"this was overkill — just do it here.\" What does that mean?",
+          "a": "The built-in \"no new route\" branch fired — the ask was too small to need routing, which is why a wrong ORC: call is cheap."
+        },
+        {
+          "q": "You want a sharper version of a fuzzy question to take to a colleague — no job, no routing. Which front door?",
+          "a": "`SQ:`. It sharpens the question itself; ORC: would be over-kit."
+        },
+        {
+          "q": "What does `ORC:` add over `PMT:`?",
+          "a": "It scopes folders/zone, routes where the work runs, and duplicate-checks; PMT only drafts a prompt. ORC: is the broadest pre-flight wrapper."
+        },
+        {
+          "q": "True or false: typing `ORC:` is required for a new chat to load your router and function properly.",
+          "a": "False. The global field loads automatically at chat birth regardless; the ORC: opener is an optional extra layer, never a prerequisite."
+        },
+        {
+          "q": "You're starting a new workstream but worry another chat may already be on it. Which command's pipeline includes the duplicate-work check?",
+          "a": "`ORC:`. The cross-chat duplicate check is part of its pipeline (PMT/SQ/HO don't do it)."
+        },
+        {
+          "q": "You want to build a brand-new academic set on a topic, done properly. What's the right chain?",
+          "a": "`ORC:` (route) → `PMT-CAS` (prompt) → `CAS` (execute). ORC sets CAS up; it doesn't replace it."
+        },
+        {
+          "q": "You're pausing a long thread so a fresh chat can continue the same work, and you're tempted to also `ORC:` it. Best move?",
+          "a": "`HO` only. It already carries the context; ORC:-ing a handoff is redundant."
+        },
+        {
+          "q": "You run `PMT:` on a rough ask, then `ORC:` on the same raw ask. What's wrong?",
+          "a": "You chained two pre-flight commands on one input — both ask clarifiers, so it's redundant. One front door per job."
+        },
+        {
+          "q": "Mid-thread on Project X you find a genuinely separate new sub-job worth its own chat, and you also want to pause Project X. Which combination makes sense?",
+          "a": "`ORC:` the new sub-job, and `HO` the Project X thread you're pausing — the one case where both legitimately appear."
+        },
+        {
+          "q": "You've drafted a strong prompt for a long, multi-source job and Claude offers to save it. Beyond saving the file, what should the offer include — and how do you start the run?",
+          "a": "A venue recommendation (RR: a fresh chat for a long/tool-heavy job) plus a paste-ready one-liner opener pointing the new chat at the saved file — not `WWW`, which only resumes a paused thread from memory."
         }
       ]
     }
